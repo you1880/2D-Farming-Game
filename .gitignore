@@ -100,4 +100,6 @@ InitTestScene*.unity*
 
 # External Assets
 /[Aa]ssets/ExternalAssets/
+/[Aa]ssets/ExternalAssets.meta
 /[Aa]ssets/Resources/ExternalAssets/
+/[Aa]ssets/Resources/ExternalAssets.meta
