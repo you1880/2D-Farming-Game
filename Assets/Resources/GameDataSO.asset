@@ -1,0 +1,361 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09faef19b876055489979375fd5ea330, type: 3}
+  m_Name: GameDataSO
+  m_EditorClassIdentifier: 
+  itemDatas:
+  - itemCode: 1
+    itemCategoryId: 1
+    itemTypeId: 1
+    itemName: Stone
+    itemLore: "\uC5EC\uB7EC\uACF3\uC5D0 \uC0AC\uC6A9\uB418\uB294 \uB3CC\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 1
+  - itemCode: 2
+    itemCategoryId: 1
+    itemTypeId: 1
+    itemName: Log
+    itemLore: "\uB098\uBB34\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 1
+  - itemCode: 3
+    itemCategoryId: 1
+    itemTypeId: 1
+    itemName: Iron Ore
+    itemLore: "\uCCA0 \uAD11\uC11D\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 3
+  - itemCode: 4
+    itemCategoryId: 1
+    itemTypeId: 1
+    itemName: Gold Ore
+    itemLore: "\uAE08 \uAD11\uC11D\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 5
+  - itemCode: 5
+    itemCategoryId: 1
+    itemTypeId: 1
+    itemName: Coal
+    itemLore: "\uC11D\uD0C4\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 2
+  - itemCode: 6
+    itemCategoryId: 1
+    itemTypeId: 2
+    itemName: Iron Ingot
+    itemLore: "\uC81C\uB828\uD55C \uCCA0 \uC8FC\uAD34\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 20
+  - itemCode: 7
+    itemCategoryId: 1
+    itemTypeId: 2
+    itemName: Gold Ingot
+    itemLore: "\uC81C\uB828\uD55C \uAE08 \uC8FC\uAD34\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 30
+  - itemCode: 101
+    itemCategoryId: 3
+    itemTypeId: 1
+    itemName: Pumpkin
+    itemLore: "\uD638\uBC15\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 150
+  - itemCode: 102
+    itemCategoryId: 3
+    itemTypeId: 1
+    itemName: Wheat
+    itemLore: "\uBC00\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 30
+  - itemCode: 103
+    itemCategoryId: 3
+    itemTypeId: 1
+    itemName: Carrot
+    itemLore: "\uB2F9\uADFC\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 60
+  - itemCode: 104
+    itemCategoryId: 3
+    itemTypeId: 1
+    itemName: Turnip
+    itemLore: "\uC21C\uBB34\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 40
+  - itemCode: 105
+    itemCategoryId: 3
+    itemTypeId: 1
+    itemName: Pepper
+    itemLore: "\uACE0\uCD94\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 25
+  - itemCode: 106
+    itemCategoryId: 3
+    itemTypeId: 1
+    itemName: Tomato
+    itemLore: "\uD1A0\uB9C8\uD1A0\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 30
+  - itemCode: 1001
+    itemCategoryId: 2
+    itemTypeId: 3
+    itemName: Basic Hoe
+    itemLore: "\uBC2D\uC744 \uAC08 \uC218 \uC788\uB294 \uAD2D\uC774\uB2E4."
+    maxStackSize: 1
+    purchaseCost: 0
+    sellingCost: 0
+  - itemCode: 1002
+    itemCategoryId: 2
+    itemTypeId: 4
+    itemName: Basic WateringCan
+    itemLore: "\uACBD\uC791\uC9C0\uC5D0 \uBB3C\uC744 \uC904 \uC218 \uC788\uB294 \uBB3C\uBFCC\uB9AC\uAC1C\uC774\uB2E4."
+    maxStackSize: 1
+    purchaseCost: 0
+    sellingCost: 0
+  - itemCode: 1003
+    itemCategoryId: 2
+    itemTypeId: 5
+    itemName: Basic Shovel
+    itemLore: "\uB2E4\uC6A9\uB3C4 \uC0BD\uC774\uB2E4."
+    maxStackSize: 1
+    purchaseCost: 0
+    sellingCost: 0
+  - itemCode: 1004
+    itemCategoryId: 2
+    itemTypeId: 6
+    itemName: Basic Pickaxe
+    itemLore: "\uACE1\uAD2D\uC774\uB2E4."
+    maxStackSize: 1
+    purchaseCost: 0
+    sellingCost: 0
+  - itemCode: 1005
+    itemCategoryId: 2
+    itemTypeId: 9
+    itemName: Basic Axe
+    itemLore: "\uB3C4\uB07C\uB2E4."
+    maxStackSize: 1
+    purchaseCost: 0
+    sellingCost: 0
+  - itemCode: 1101
+    itemCategoryId: 2
+    itemTypeId: 7
+    itemName: Pumpkin Seed
+    itemLore: "\uD638\uBC15\uC528\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 90
+    sellingCost: 45
+  - itemCode: 1102
+    itemCategoryId: 2
+    itemTypeId: 7
+    itemName: Wheat Seed
+    itemLore: "\uBC00\uC528\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 60
+    sellingCost: 30
+  - itemCode: 1103
+    itemCategoryId: 2
+    itemTypeId: 7
+    itemName: Carrot Seed
+    itemLore: "\uB2F9\uADFC\uC528\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 40
+    sellingCost: 20
+  - itemCode: 1104
+    itemCategoryId: 2
+    itemTypeId: 7
+    itemName: Turnip Seed
+    itemLore: "\uC21C\uBB34\uC528\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 30
+    sellingCost: 15
+  - itemCode: 1105
+    itemCategoryId: 2
+    itemTypeId: 7
+    itemName: Pepper Seed
+    itemLore: "\uACE0\uCD94\uC528\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 70
+    sellingCost: 35
+  - itemCode: 1106
+    itemCategoryId: 2
+    itemTypeId: 7
+    itemName: Tomato Seed
+    itemLore: "\uD1A0\uB9C8\uD1A0\uC528\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 80
+    sellingCost: 40
+  - itemCode: 10001
+    itemCategoryId: 4
+    itemTypeId: 9
+    itemName: Chest
+    itemLore: "\uC544\uC774\uD15C\uC744 \uBCF4\uAD00\uD560 \uC218 \uC788\uB294 \uC0C1\uC790\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 0
+  - itemCode: 10002
+    itemCategoryId: 4
+    itemTypeId: 9
+    itemName: Furnace
+    itemLore: "\uC544\uC774\uD15C\uC744 \uC81C\uB828\uD560 \uC218 \uC788\uB294 \uD654\uB85C\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 0
+  cropDatas:
+  - cropType: 1
+    requireDays: 13
+    repeatableRequireDays: 0
+    canPlantSeason: 1
+    isRepeatable: 0
+  - cropType: 2
+    requireDays: 8
+    repeatableRequireDays: 0
+    canPlantSeason: 2
+    isRepeatable: 0
+  - cropType: 3
+    requireDays: 6
+    repeatableRequireDays: 0
+    canPlantSeason: 0
+    isRepeatable: 0
+  - cropType: 4
+    requireDays: 5
+    repeatableRequireDays: 0
+    canPlantSeason: 0
+    isRepeatable: 0
+  - cropType: 5
+    requireDays: 12
+    repeatableRequireDays: 4
+    canPlantSeason: 2
+    isRepeatable: 1
+  - cropType: 6
+    requireDays: 11
+    repeatableRequireDays: 5
+    canPlantSeason: 1
+    isRepeatable: 1
+  propDropDatas:
+  - propType: 4
+    dropItems:
+    - itemCode: 2
+      dropChance: 1
+      minDropCount: 2
+      maxDropCount: 5
+  - propType: 5
+    dropItems:
+    - itemCode: 1
+      dropChance: 1
+      minDropCount: 1
+      maxDropCount: 1
+    - itemCode: 3
+      dropChance: 0.1
+      minDropCount: 1
+      maxDropCount: 1
+  - propType: 7
+    dropItems:
+    - itemCode: 1
+      dropChance: 1
+      minDropCount: 1
+      maxDropCount: 1
+    - itemCode: 3
+      dropChance: 1
+      minDropCount: 1
+      maxDropCount: 3
+  - propType: 8
+    dropItems:
+    - itemCode: 1
+      dropChance: 1
+      minDropCount: 1
+      maxDropCount: 1
+    - itemCode: 4
+      dropChance: 1
+      minDropCount: 1
+      maxDropCount: 2
+  - propType: 9
+    dropItems:
+    - itemCode: 5
+      dropChance: 1
+      minDropCount: 1
+      maxDropCount: 4
+  cropDropDatas:
+  - cropType: 1
+    dropItems:
+    - itemCode: 101
+      dropChance: 1
+      minDropCount: 1
+      maxDropCount: 1
+  - cropType: 2
+    dropItems:
+    - itemCode: 102
+      dropChance: 1
+      minDropCount: 2
+      maxDropCount: 3
+  - cropType: 3
+    dropItems:
+    - itemCode: 103
+      dropChance: 1
+      minDropCount: 1
+      maxDropCount: 1
+  - cropType: 4
+    dropItems:
+    - itemCode: 104
+      dropChance: 1
+      minDropCount: 1
+      maxDropCount: 1
+  - cropType: 5
+    dropItems:
+    - itemCode: 105
+      dropChance: 1
+      minDropCount: 2
+      maxDropCount: 4
+  - cropType: 6
+    dropItems:
+    - itemCode: 106
+      dropChance: 1
+      minDropCount: 2
+      maxDropCount: 3
+  shopDatas:
+  - shopType: 1
+    shopItemList: 4d0400004e0400004f040000500400005104000052040000
+  recipeDatas:
+  - outputItemCode: 10001
+    requireMaterials:
+    - materialItemCode: 1
+      materialQuantity: 2
+    - materialItemCode: 2
+      materialQuantity: 8
+  - outputItemCode: 10002
+    requireMaterials:
+    - materialItemCode: 1
+      materialQuantity: 8
+    - materialItemCode: 5
+      materialQuantity: 1
+  smeltingDatas:
+  - inputItemCode: 3
+    inputQuantity: 5
+    outputItemCode: 6
+    processingHour: 1
+    processingMinute: 30
+  - inputItemCode: 4
+    inputQuantity: 5
+    outputItemCode: 7
+    processingHour: 4
+    processingMinute: 0
