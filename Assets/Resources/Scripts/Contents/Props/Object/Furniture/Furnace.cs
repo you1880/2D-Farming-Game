@@ -11,6 +11,7 @@ public class Furnace : Prop, IInteractable
     [SerializeField] private GameObject _onFurnace;
     [SerializeField] private GameObject _outputInfo;
     [SerializeField] private SpriteRenderer _outputItemSpriteRenderer;
+    [SerializeField] private AudioTrigger _audioTrigger;
     private Data.Prop.Furnace _currentFurnace = null;
 
     protected override void Init()
@@ -106,6 +107,7 @@ public class Furnace : Prop, IInteractable
         if (Managers.Game.TryStartSmelting(_currentFurnace))
         {
             ChangeFurnaceSprite(_currentFurnace.isMelting);
+            _audioTrigger?.PlaySound();
         }
     }
 

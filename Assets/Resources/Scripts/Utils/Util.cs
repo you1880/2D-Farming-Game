@@ -94,4 +94,22 @@ public class Util
 
         return distanceX <= range && distanceY <= range;
     }
+
+    public static Define.ItemGrade ItemGradeRNG(Data.Game.DropItemGradeWeights dropItemGradeWeights)
+    {
+        float total = dropItemGradeWeights.Total;
+        if (total <= 0f)
+        {
+            return Define.ItemGrade.None;
+        }
+
+        float rng = UnityEngine.Random.value * total;
+
+        if ((rng -= dropItemGradeWeights.None)   < 0.0f) return Define.ItemGrade.None;
+        if ((rng -= dropItemGradeWeights.Bronze) < 0.0f) return Define.ItemGrade.Bronze;
+        if ((rng -= dropItemGradeWeights.Silver) < 0.0f) return Define.ItemGrade.Silver;
+        if ((rng -= dropItemGradeWeights.Gold)   < 0.0f) return Define.ItemGrade.Gold;
+
+        return Define.ItemGrade.Amethyst;
+    }
 }

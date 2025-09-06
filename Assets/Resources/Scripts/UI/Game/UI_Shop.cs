@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Data.Game;
@@ -88,6 +89,7 @@ public class UI_Shop : UI_BaseInventory
     private Define.ShopType _shopType;
     private bool _uiReady = false;
     private bool _shopInitalized = false;
+    public event Action ClosedAction;
 
     public void InitShop(Define.ShopType shopType)
     {
@@ -108,7 +110,16 @@ public class UI_Shop : UI_BaseInventory
         }
 
         InventoryItem inventoryItem = inventoryDataManager.GetInventoryItem(slotId);
+        if (inventoryItem == null)
+        {
+            return;
+        }
+
         Item item = Managers.Data.GameDataManager.GetItemData(inventoryItem.itemCode);
+        if (item == null)
+        {
+            return;
+        }
 
         if (item.sellingCost == 0)
         {
@@ -120,7 +131,7 @@ public class UI_Shop : UI_BaseInventory
             1 : inventoryItem.quantity;
         int totalAmount = item.sellingCost * sellQuantity;
 
-        if (inventoryDataManager.TryUseItemInventory(inventoryItem.itemCode, sellQuantity))
+        if (inventoryDataManager.TryRemoveAt(slotId, sellQuantity))
         {
             playerWallet.AddMoney(totalAmount);
         }
@@ -142,12 +153,17 @@ public class UI_Shop : UI_BaseInventory
 
         int buyQuantity = (data.button == PointerEventData.InputButton.Left) ?
             1 : 5;
-        int totalAmount = item.sellingCost * buyQuantity;
+        int totalAmount = item.purchaseCost * buyQuantity;
 
         if (playerWallet.TrySpend(totalAmount))
         {
             inventoryDataManager.AddItemInventory(item.itemCode, buyQuantity);
         }
+    }
+
+    private void ClosedShopUI()
+    {
+        ClosedAction?.Invoke();
     }
 
     private void OnExitButtonClicked(PointerEventData data)
@@ -244,10 +260,13 @@ public class UI_Shop : UI_BaseInventory
         SetPlayerGoldText(playerData.gold);
     }
 
+    private void Update() {}
+    
     private void OnEnable()
     {
         inventoryDataManager.OnInventoryChanged -= UpdateInventoryUI;
         inventoryDataManager.OnInventoryChanged += UpdateInventoryUI;
+
         Managers.Data.UserDataManager.WalletSerivce.OnMoneyChanged -= SetPlayerGoldText;
         Managers.Data.UserDataManager.WalletSerivce.OnMoneyChanged += SetPlayerGoldText;
     }
@@ -256,5 +275,6 @@ public class UI_Shop : UI_BaseInventory
     {
         inventoryDataManager.OnInventoryChanged -= UpdateInventoryUI;
         Managers.Data.UserDataManager.WalletSerivce.OnMoneyChanged -= SetPlayerGoldText;
+        ClosedShopUI();
     }
 }

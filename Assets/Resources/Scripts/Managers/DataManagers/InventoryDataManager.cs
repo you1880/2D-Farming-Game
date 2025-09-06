@@ -60,20 +60,6 @@ public class InventoryDataManager
     public InventoryItem GetQuickSlotItem()
         => GetInventoryItem(CurrentQuickSlotId);
 
-    public bool UseQuickSlotItem(int quantity = 1)
-    {
-        if (!_playerContainer.TryGet(CurrentQuickSlotId, out InventoryItem inventoryItem))
-        {
-            return false;
-        }
-
-        if (!TryUseItemInventory(inventoryItem.itemCode, quantity))
-        {
-            return false;
-        }
-
-        return true;
-    }
 
     public bool TryUseItemInventory(int itemCode, int quantity)
     {
@@ -135,6 +121,21 @@ public class InventoryDataManager
         return true;
     }
 
+    public bool UseQuickSlotItem(int quantity = 1)
+    {
+        if (!_playerContainer.TryGet(CurrentQuickSlotId, out InventoryItem inventoryItem))
+        {
+            return false;
+        }
+
+        if (!TryUseItemInventory(inventoryItem.itemCode, quantity))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     public bool HasAtLeastItemInInventory(int itemCode, int quantity)
         => ContainerUtil.HasAtLeastItem(_playerContainer, itemCode, quantity);
 
@@ -170,7 +171,7 @@ public class InventoryDataManager
             && (selectedSlotId != targetSlotId);
     }
 
-    public bool AddItemInventory(int itemCode, int quantity, int itemGrade = 0)
+    public bool AddItemInventory(int itemCode, int quantity, Define.ItemGrade itemGrade = Define.ItemGrade.None)
     {
         if (itemCode == 0 || quantity <= 0)
         {
@@ -255,5 +256,51 @@ public class InventoryDataManager
         {
             _playerContainer.Remove(slotId);
         }
+    }
+
+    public bool TryRemoveAt(int slotId, int quantity)
+    {
+        if (!_playerContainer.TryGet(slotId, out InventoryItem inventoryItem) || inventoryItem == null || quantity <= 0)
+        {
+            return false;
+        }
+
+        int remain = inventoryItem.quantity - quantity;
+        if (remain <= 0)
+        {
+            _playerContainer.Remove(slotId);
+        }
+        else
+        {
+            inventoryItem.quantity = remain;
+            _playerContainer.Set(slotId, inventoryItem);
+        }
+
+        return true;
+    }
+
+    public bool TrySplitItem(InventoryItem fromInventoryItem, int fromSlotId, int splitQuantity, IItemContainer itemContainer = null)
+    {
+        if (fromInventoryItem == null || splitQuantity <= 0)
+        {
+            return false;
+        }
+        
+        itemContainer = itemContainer == null ? _playerContainer : itemContainer;
+
+        for (int slotId = 0; slotId < itemContainer.Capacity; slotId++)
+        {
+            if (itemContainer.Contains(slotId)) continue;
+
+            InventoryItem remainItem = new InventoryItem(fromInventoryItem.itemCode, fromInventoryItem.quantity - splitQuantity, fromInventoryItem.itemGrade);
+            InventoryItem splitItem = new InventoryItem(fromInventoryItem.itemCode, splitQuantity, fromInventoryItem.itemGrade);
+
+            itemContainer.Set(fromSlotId, remainItem);
+            itemContainer.Set(slotId, splitItem);
+
+            return true;
+        }
+
+        return false;
     }
 }

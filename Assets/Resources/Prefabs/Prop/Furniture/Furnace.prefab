@@ -932,6 +932,7 @@ GameObject:
   - component: {fileID: 4188152983232227227}
   - component: {fileID: 4189264744520778206}
   - component: {fileID: 7850765326026641137}
+  - component: {fileID: -2610074392393595680}
   m_Layer: 0
   m_Name: Furnace
   m_TagString: Untagged
@@ -987,10 +988,18 @@ MonoBehaviour:
       dropChance: 1
       minDropCount: 1
       maxDropCount: 1
+      useGrade: 0
+      dropItemGradeWeights:
+        None: 0
+        Bronze: 0
+        Silver: 0
+        Gold: 0
+        Amethyst: 0
   _offFurnace: {fileID: 4188152982018518812}
   _onFurnace: {fileID: 4188152983823648638}
   _outputInfo: {fileID: 5909047424083295401}
   _outputItemSpriteRenderer: {fileID: 1277106593428940851}
+  _audioTrigger: {fileID: -2610074392393595680}
 --- !u!61 &7850765326026641137
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1017,6 +1026,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-2610074392393595680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4188152983232227225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b5f7b65a03dcb643a49f92d6bce280c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EffectSoundType: 9
+  MinInterval: 0.5
 --- !u!1 &4188152983367734519
 GameObject:
   m_ObjectHideFlags: 0

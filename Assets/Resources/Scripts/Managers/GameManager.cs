@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Data.Game;
+using Data.Inventory;
 using Data.Player;
 using Data.Tile;
 using UnityEngine;
@@ -9,18 +10,20 @@ using UnityEngine;
 public class GameManager
 {
     private readonly CraftingService _craftingService;
+    private readonly DeliveryService _deliveryService;
     private readonly FarmingService _farmingService;
     private readonly GameFlowService _gameFlowService;
     private readonly PropService _propService;
-    private readonly SmeltingService _smeltingSerivce;
+    private readonly SmeltingService _smeltingSerivice;
 
     public GameManager()
     {
         _craftingService = new CraftingService();
+        _deliveryService = new DeliveryService();
         _propService = new PropService();
-        _smeltingSerivce = new SmeltingService();
+        _smeltingSerivice = new SmeltingService();
         _farmingService = new FarmingService(_propService);
-        _gameFlowService = new GameFlowService(_farmingService);
+        _gameFlowService = new GameFlowService(_farmingService, _deliveryService);
     }
 
     public void StartGame(int saveNumber) => _gameFlowService.StartGame(saveNumber);
@@ -43,8 +46,17 @@ public class GameManager
         => _craftingService.CraftItem(CraftingTablePosition, craftResultItemCode, craftingMaterials);
 
     public bool TryStartSmelting(Data.Prop.Furnace furnace)
-        => _smeltingSerivce.TryStartSmelting(furnace);
+        => _smeltingSerivice.TryStartSmelting(furnace);
 
     public bool CollectOutput(Vector3Int furnacePosition, Data.Prop.Furnace furnace)
-        => _smeltingSerivce.CollectOutput(furnacePosition, furnace);
+        => _smeltingSerivice.CollectOutput(furnacePosition, furnace);
+
+    public bool TryAddDeliveryItem()
+        => _deliveryService.TryAddDeliveryItem();
+
+    public bool GetAndAddLastInputItem()
+        => _deliveryService.GetAndAddLastInputItem();
+
+    public List<InventoryItem> GetInputItems()
+        => _deliveryService.GetInputItemList();
 }

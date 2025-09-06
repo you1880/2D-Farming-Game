@@ -20,6 +20,7 @@ public class DoorPortal : BasePortal, IInteractable
 
         if (_door != null)
         {
+            GetComponent<AudioTrigger>()?.PlaySound();
             StartCoroutine(_door.OpenDoor());
         }
     }

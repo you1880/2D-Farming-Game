@@ -7,8 +7,9 @@ using UnityEngine.Playables;
 public class PlayerController : MonoBehaviour
 {
     private const float PLAYER_MOVE_SPEED = 5.0f;
-    private AnimController _animationController;
-    private Rigidbody2D _playerRigidbody;
+    [SerializeField] private AnimController _animationController;
+    [SerializeField] private FootstepSound _footstep;
+    [SerializeField] private Rigidbody2D _playerRigidbody;
     private Vector2 _moveDir;
     private Define.PlayerState _state = Define.PlayerState.Idle;
     private Define.PlayerDirection _playerDirection = Define.PlayerDirection.Down;
@@ -144,13 +145,16 @@ public class PlayerController : MonoBehaviour
             PlayerDirection = _moveDir.y > 0 ? Define.PlayerDirection.Up : Define.PlayerDirection.Down;
         }
 
+        _footstep.OnFootstep();
         _animationController.SetPlayerAnimation();
+        
     }
 
     private void Start()
     {
-        _playerRigidbody = GetComponent<Rigidbody2D>();
-        _animationController = GetComponent<AnimController>();
+        _playerRigidbody ??= GetComponent<Rigidbody2D>();
+        _animationController ??= GetComponent<AnimController>();
+        _footstep ??= GetComponent<FootstepSound>();
     }
 
     private void Update()

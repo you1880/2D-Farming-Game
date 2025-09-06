@@ -92,21 +92,28 @@ public class FarmingService
         Data.Game.Crop crop = Managers.Data.GameDataManager.GetCropData(farmTile.plantedCrop.cropType);
         PlantedCrop plantedCrop = farmTile.plantedCrop;
 
-        if (farmTile.isWatered)
+        if (crop.canPlantSeason != Managers.Time.CurrentSeason)
         {
-            plantedCrop.growLevel = Mathf.Min(plantedCrop.growLevel + 1, crop.requireDays);
-            plantedCrop.noWateredDays = 0;
+            plantedCrop.isDead = true;
         }
-        else if (!farmTile.isWatered && plantedCrop.growLevel < crop.requireDays)
+        else
         {
-            plantedCrop.noWateredDays += 1;
-
-            if (plantedCrop.noWateredDays >= 3)
+            if (farmTile.isWatered)
             {
-                plantedCrop.isDead = true;
+                plantedCrop.growLevel = Mathf.Min(plantedCrop.growLevel + 1, crop.requireDays);
+                plantedCrop.noWateredDays = 0;
+            }
+            else if (!farmTile.isWatered && plantedCrop.growLevel < crop.requireDays)
+            {
+                plantedCrop.noWateredDays += 1;
+
+                if (plantedCrop.noWateredDays >= 3)
+                {
+                    plantedCrop.isDead = true;
+                }
             }
         }
-
+        
         return new FarmTile(farmTile.x, farmTile.y, farmTile.isPlowed, false, plantedCrop);
     }
 }

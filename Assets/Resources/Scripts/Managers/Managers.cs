@@ -13,6 +13,7 @@ public class Managers : MonoBehaviour
     private GameManager _game = new GameManager();  
     private GameTimeManager _time = new GameTimeManager();
     private InputManager _input = new InputManager();
+    private SoundManager _sound = new SoundManager();
     private PropManager _prop = new PropManager();
     private ResourceManager _resource = new ResourceManager();
     private SceneManagerEx _scene = new SceneManagerEx();
@@ -24,6 +25,7 @@ public class Managers : MonoBehaviour
     public static GameManager Game { get { return Instance._game; } }
     public static GameTimeManager Time { get { return Instance._time; } }
     public static InputManager Input { get { return Instance._input; } }
+    public static SoundManager Sound { get { return Instance._sound; } }
     public static PropManager Prop { get { return Instance._prop; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
     public static SceneManagerEx Scene { get { return Instance._scene; } }
@@ -58,6 +60,7 @@ public class Managers : MonoBehaviour
             _instance = manager.GetComponent<Managers>();
 
             _instance._data.Init();
+            _instance._sound.Init();
             _instance._resource.Init();
             _instance._tile.Init();
             _instance._ui.Init();

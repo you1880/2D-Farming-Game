@@ -103,6 +103,22 @@ public class ResourceManager
         return null;
     }
 
+    public Sprite LoadItemGradeSprite(Define.ItemGrade itemGrade)
+    {
+        if (itemGrade == Define.ItemGrade.None)
+        {
+            return null;
+        }
+
+        string path = string.Concat(itemGrade.ToString(), "Grade");
+        if (_itemSpriteDict.TryGetValue(path, out Sprite sprite))
+        {
+            return sprite;
+        }
+
+        return null;
+    }
+
     public GameObject Instantiate(string path, Transform parent = null)
     {
         GameObject original = Load<GameObject>($"Prefabs/{path}");

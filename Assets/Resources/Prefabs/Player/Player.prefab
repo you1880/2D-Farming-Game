@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1041954624800982746}
   - component: {fileID: 7512532605026216221}
   - component: {fileID: 7275513296585805945}
+  - component: {fileID: -2135276875045629911}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -149,6 +150,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7a83c7b469d58d4d9efdabb68b830bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animationController: {fileID: 7512532605026216221}
+  _footstep: {fileID: -2135276875045629911}
+  _playerRigidbody: {fileID: 5699385654546406380}
 --- !u!95 &1041954624800982746
 Animator:
   serializedVersion: 5
@@ -195,3 +199,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 537f00d9c9f8cc0419d394441173a341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-2135276875045629911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5962958135170529710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 063a779f4785310499077af810a9fb17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinInterval: 0.3

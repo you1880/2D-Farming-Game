@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 
 public class TileManager
 {
+    private Grid _grid;
     private Tilemap _grassTilemap;
     private Tilemap _canPlowFarmTilemap;
     private Tilemap _plowedFarmTilemap;
@@ -13,57 +14,30 @@ public class TileManager
     private RuleTile _plowedFarmRuleTile;
     private RuleTile _wateredFarmRuleTile;
 
-    public Tilemap GrassTilemap
+    public Grid Grid
     {
         get
         {
-            if (_grassTilemap == null)
+            if (_grid == null)
             {
-                _grassTilemap = GameObject.Find("Grid").transform.Find("Ground/Grass").GetComponent<Tilemap>();
+                _grid = GameObject.FindWithTag("Grid")?.GetComponent<Grid>();
             }
 
-            return _grassTilemap;
+            return _grid;
         }
     }
+
+    public Tilemap GrassTilemap
+        => GetTilemapFromGrid(ref _grassTilemap, "Ground/Grass");
 
     public Tilemap CanPlowFarmTilemap
-    {
-        get
-        {
-            if (_canPlowFarmTilemap == null)
-            {
-                _canPlowFarmTilemap = GameObject.Find("Grid").transform.Find("Ground/Farm").GetComponent<Tilemap>();
-            }
-
-            return _canPlowFarmTilemap;
-        }
-    }
+        => GetTilemapFromGrid(ref _canPlowFarmTilemap, "Ground/Farm");
 
     public Tilemap PlowedFarmTilemap
-    {
-        get
-        {
-            if (_plowedFarmTilemap == null)
-            {
-                _plowedFarmTilemap = GameObject.Find("Grid").transform.Find("Ground/Plow").GetComponent<Tilemap>();
-            }
-
-            return _plowedFarmTilemap;
-        }
-    }
+        => GetTilemapFromGrid(ref _plowedFarmTilemap, "Ground/Plow");
 
     public Tilemap WateredFarmTilemap
-    {
-        get
-        {
-            if (_wateredFarmTilemap == null)
-            {
-                _wateredFarmTilemap = GameObject.Find("Grid").transform.Find("Ground/Watered").GetComponent<Tilemap>();
-            }
-
-            return _wateredFarmTilemap;
-        }
-    }
+        => GetTilemapFromGrid(ref _wateredFarmTilemap, "Ground/Watered");
 
     public void PlacePlowedTile(Vector3Int tilePosition)
     {
@@ -83,8 +57,8 @@ public class TileManager
         {
             return;
         }
-        
-        PlowedFarmTilemap.SetTile(tilePosition, _plowedFarmRuleTile); 
+
+        PlowedFarmTilemap.SetTile(tilePosition, _plowedFarmRuleTile);
     }
 
     public void RemovePlowedTile(Vector3Int tilePosition)
@@ -148,7 +122,25 @@ public class TileManager
 
     public void Init()
     {
-        _plowedFarmRuleTile = Managers.Resource.Load<RuleTile>("ExternalAssets/Resources/Tile/FarmTile");
-        _wateredFarmRuleTile = Managers.Resource.Load<RuleTile>("ExternalAssets/Resources/Tile/WateredTile");
+        _plowedFarmRuleTile = Managers.Resource.Load<RuleTile>("ExternalAssets/Resources/Tiles/FarmTile");
+        _wateredFarmRuleTile = Managers.Resource.Load<RuleTile>("ExternalAssets/Resources/Tiles/WateredTile");
+    }
+
+    private Tilemap GetTilemapFromGrid(ref Tilemap tilemap, string path)
+    {
+        if (tilemap)
+        {
+            return tilemap;
+        }
+
+        if (Grid == null)
+        {
+            return null;
+        }
+
+        Transform transform = Grid.transform.Find(path);
+        tilemap = transform ? transform.GetComponent<Tilemap>() : null;
+
+        return tilemap;
     }
 }

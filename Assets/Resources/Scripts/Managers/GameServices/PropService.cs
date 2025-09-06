@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class PropService
 {
+    private HashSet<Vector3Int> _harvestedTreeSet = new HashSet<Vector3Int>();
+
     public bool TryBreakProp(Vector3Int tilePosition, Define.PropType propType, Data.Game.PropDropTable propDropTable = null)
     {
         PropDropTable dropTable = propDropTable ?? Managers.Data.GameDataManager.GetPropDropTable(propType);
@@ -55,7 +57,7 @@ public class PropService
 
         return true;
     }
-    
+
     public void SpawnDropItem(Vector3Int tilePosition, DropItem dropItem)
     {
         if (dropItem == null || dropItem.itemCode == 0)
@@ -65,20 +67,43 @@ public class PropService
 
         int quantity = UnityEngine.Random.Range(dropItem.minDropCount, dropItem.maxDropCount + 1);
         Item item = Managers.Data.GameDataManager.GetItemData(dropItem.itemCode);
-        int stackSize = item?.maxStackSize ?? 1;
+        int stackSize = Math.Max(1, item?.maxStackSize ?? 1);
 
-        while (quantity > 0)
+        void SpawnStacks(int total, Define.ItemGrade grade)
         {
-            int spawnQuantity = Math.Min(quantity, stackSize);
-            Managers.Prop.SpawnProp(new PropSpawnData
+            while (total > 0)
             {
-                tilePosition = tilePosition,
-                propType = Define.PropType.DropItem,
-                itemCode = dropItem.itemCode,
-                itemQuantity = spawnQuantity
-            });
+                int spawnQuantity = Math.Min(total, stackSize);
+                Managers.Prop.SpawnProp(new PropSpawnData
+                {
+                    tilePosition = tilePosition,
+                    propType = Define.PropType.DropItem,
+                    itemCode = dropItem.itemCode,
+                    itemQuantity = spawnQuantity,
+                    itemGrade = grade
+                });
 
-            quantity -= spawnQuantity;
+                total -= spawnQuantity;
+            }
+        }
+
+        if (dropItem.useGrade)
+        {
+            Dictionary<Define.ItemGrade, int> pairs = new Dictionary<Define.ItemGrade, int>();
+            for (int i = 0; i < quantity; i++)
+            {
+                Define.ItemGrade grade = Util.ItemGradeRNG(dropItem.dropItemGradeWeights);
+                pairs[grade] = (pairs.TryGetValue(grade, out int q) ? q : 0) + 1;
+            }
+
+            foreach (var kv in pairs)
+            {
+                SpawnStacks(kv.Value, kv.Key);
+            }
+        }
+        else
+        {
+            SpawnStacks(quantity, Define.ItemGrade.None);
         }
     }
 }

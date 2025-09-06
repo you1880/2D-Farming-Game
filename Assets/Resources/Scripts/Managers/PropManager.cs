@@ -6,18 +6,13 @@ using UnityEngine;
 
 public class PropManager
 {
-    private Dictionary<Define.PropType, string> _propPrefabPath = new Dictionary<Define.PropType, string>
-    {
-        {Define.PropType.Crop, "Prop/Crop"},
-        {Define.PropType.DropItem, "Prop/DroppedItem"},
-        {Define.PropType.Furniture, "Prop/Furniture"} //TMP
-    };
-
     private Dictionary<Vector3Int, GameObject> _propDict = new Dictionary<Vector3Int, GameObject>();
+    private HashSet<Vector3Int> _harvestedTreeSet = new HashSet<Vector3Int>();
     private GameObject _props;
     private GameObject _crops;
     private GameObject _dropItems;
     private GameObject _furnitures;
+    private GameObject _trees;
 
     public GameObject Prop
         => GetOrCreateGroup();
@@ -31,6 +26,9 @@ public class PropManager
     public GameObject Furnitures
         => GetOrCreateGroup(ref _furnitures, "@Furnitures");
 
+    public GameObject Trees
+        => GetOrCreateGroup(ref _trees, "@Trees/@BreakableTrees");
+
     public GameObject SpawnProp(PropSpawnData propSpawnData)
     {
         if (propSpawnData == null || propSpawnData.propType == Define.PropType.None)
@@ -38,10 +36,7 @@ public class PropManager
             return null;
         }
 
-        if (!_propPrefabPath.TryGetValue(propSpawnData.propType, out string path))
-        {
-            return null;
-        }
+        string path = $"Prop/{propSpawnData.propType}";
 
         Vector3Int tilePosition = propSpawnData.tilePosition;
         GameObject propObject = propSpawnData.propType switch
@@ -74,9 +69,9 @@ public class PropManager
     public GameObject GetPropObject(Vector3Int tilePosition)
     {
         if (_propDict.TryGetValue(tilePosition, out GameObject propObject))
-            {
-                return propObject;
-            }
+        {
+            return propObject;
+        }
 
         return null;
     }
@@ -90,7 +85,7 @@ public class PropManager
 
         GameObject root = GameObject.Find("@Props");
 
-        _props = root == null ? new GameObject("@Props") : root; 
+        _props = root == null ? new GameObject("@Props") : root;
 
         return _props;
     }
@@ -143,8 +138,9 @@ public class PropManager
         {
             int itemCode = propSpawnData.itemCode ?? 0;
             int quantity = propSpawnData.itemQuantity ?? 0;
+            Define.ItemGrade itemGrade = propSpawnData.itemGrade ?? Define.ItemGrade.None;
 
-            propObject.GetComponent<DroppedItem>()?.SetDropItem(itemCode, quantity);
+            propObject.GetComponent<DroppedItem>()?.SetDropItem(itemCode, quantity, itemGrade);
         }
 
         return propObject;
@@ -188,4 +184,20 @@ public class PropManager
 
         return propObject;
     }
+
+    public void RegisterTree(Vector3Int position)
+    {
+        if (_harvestedTreeSet.Contains(position))
+        {
+            return;
+        }
+
+        _harvestedTreeSet.Add(position);
+    }
+
+    public void ClearHarvestedTrees()
+        => _harvestedTreeSet.Clear();
+
+    public bool CheckTreeHarvested(Vector3Int position)
+        => _harvestedTreeSet.Contains(position);
 }

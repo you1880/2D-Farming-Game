@@ -7,6 +7,7 @@ public class MainScene : BaseScene
 {
     [SerializeField] private Vector3 _housePosition;
     [SerializeField] private Vector3 _cavePosition;
+    [SerializeField] private GameObject _breakableTreesGroup;
     private GameObject _player;
     public override void Clear() { }
 
@@ -68,14 +69,10 @@ public class MainScene : BaseScene
         Managers.Area.Init();
         Managers.Time.Init();
         Managers.Time.FlowTime();
-
+        
         PlaceChangedTiles();
-
-        if (_player == null)
-        {
-            _player = Managers.Resource.Instantiate("Player/Player");
-        }
-        SetPlayerPosition();
+        PlaceTree();
+        CreatePlayer();
     }
 
     private void PlaceFarmTile(Vector3Int pos, FarmTile farmTile)
@@ -115,11 +112,6 @@ public class MainScene : BaseScene
             return;
         }
 
-        if (farmTile.plantedCrop == null || farmTile.plantedCrop.cropType == Define.CropType.None)
-        {
-            return;
-        }
-
         if (!farmTile.isPlowed)
         {
             return;
@@ -136,16 +128,21 @@ public class MainScene : BaseScene
             cropType = cropType,
             growLevel = growLevel,
             isDead = isDead
-        }
-        );
+        });
     }
 
-    private void SetPlayerPosition()
+    private void CreatePlayer()
     {
+        if (_player == null)
+        {
+            _player = Managers.Resource.Instantiate("Player/Player");
+        }
+
         if (_player == null)
         {
             return;
         }
+        
 
         if (Managers.Area.CurrentArea == Define.Area.FarmHouse)
         {
@@ -156,6 +153,25 @@ public class MainScene : BaseScene
             _player.transform.position = _cavePosition;
         }
     }
+
+    private void PlaceTree()
+    {
+        if (_breakableTreesGroup == null)
+        {
+            return;
+        }
+
+        foreach (Transform child in _breakableTreesGroup.transform)
+        {
+            Vector3Int treePosition = Managers.Tile.ConvertWorldToCell(child.position);
+
+            if (Managers.Prop.CheckTreeHarvested(treePosition))
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+    }
+
 
     private void OnEnable()
     {

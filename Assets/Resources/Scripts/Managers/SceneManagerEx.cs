@@ -14,18 +14,18 @@ public class SceneManagerEx
     private GameObject _blocker;
     private UI_Blocker _blockerUI;
     private Image _blockerImage;
-
+    public event Action<Define.SceneType> OnSceneChanged;
     public BaseScene CurrentScene { get { return GameObject.Find("@Scene").GetComponent<BaseScene>(); } }
+    public Define.SceneType CurrentSceneType { get { return CurrentScene == null ? Define.SceneType.Unknown : CurrentScene.CurrentScene; }}
 
     public void LoadNextScene(Define.SceneType sceneType, PlayerController playerController = null)
     {
-        if (CurrentScene?.CurrentScene == sceneType)
+        if (CurrentSceneType == sceneType)
         {
             return;
         }
 
         string sceneName = GetSceneName(sceneType);
-
         Managers.RunCoroutine(LoadSceneAsync(sceneName, playerController));
     }
 
@@ -96,6 +96,8 @@ public class SceneManagerEx
         Managers.UI.ClearUIDictionary();
 
         yield return null;
+
+        OnSceneChanged?.Invoke(CurrentSceneType);
 
         yield return Managers.RunCoroutine(FadeIn());
         

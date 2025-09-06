@@ -97,6 +97,8 @@ public class UI_QuickSlot : UI_BaseInventory
         SetQuickSlotItem();
     }
 
+    private void Update() {}
+
     private void OnEnable()
     {
         Managers.Input.KeyAction -= OnKeyboardEvent;

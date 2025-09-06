@@ -17,6 +17,7 @@ public class PropSpawnData
     #region DropItem
     public int? itemCode;
     public int? itemQuantity;
+    public Define.ItemGrade? itemGrade;
     #endregion
 
     #region  Furniture

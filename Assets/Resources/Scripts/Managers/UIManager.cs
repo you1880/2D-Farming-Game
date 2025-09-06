@@ -107,8 +107,6 @@ public class UIManager
         if (_openedPauseUI != null)
         {
             CloseUI(_openedPauseUI);
-            _openedPauseUI = null;
-
             return null;
         }
 
@@ -130,9 +128,22 @@ public class UIManager
         {
             return;
         }
+        
+        if (_openedPauseUI == ui)
+        {
+            ClosePauseUI(ui);
+        }
 
         Managers.Time.ResumeGame();
         ui.SetActive(false);
+    }
+
+    private void ClosePauseUI(GameObject ui)
+    {
+        if (_openedPauseUI == ui)
+        {
+            _openedPauseUI = null;
+        }
     }
 
     public void ClearUI(GameObject ui)
@@ -158,7 +169,7 @@ public class UIManager
     
     private bool CanShowPauseUI()
     {
-        Define.SceneType currentSceneType = Managers.Scene.CurrentScene?.CurrentScene ?? Define.SceneType.Unknown;
+        Define.SceneType currentSceneType = Managers.Scene.CurrentSceneType;
 
         return currentSceneType == Define.SceneType.Main || currentSceneType == Define.SceneType.Cave;
     }

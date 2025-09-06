@@ -9,6 +9,5 @@ public class LobbyScene : BaseScene
     public override void Init()
     {
         CurrentScene = Define.SceneType.Lobby;
-        
     }
 }

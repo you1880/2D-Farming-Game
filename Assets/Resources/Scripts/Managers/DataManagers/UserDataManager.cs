@@ -21,7 +21,7 @@ public class UserDataManager
     private DataManager dataManager => Managers.Data;
     private Dictionary<int, PlayerData> _playerDatas = new Dictionary<int, PlayerData>();
     private IWallet _wallet;
-    public IWallet WalletSerivce => _wallet ?? new PlayerWallet();
+    public IWallet WalletSerivce => _wallet ??= new PlayerWallet();
     public PlayerData CurrentData { get; private set; }
 
     public void Init()

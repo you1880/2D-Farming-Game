@@ -6,7 +6,7 @@ public abstract class Prop : MonoBehaviour
 {
     private const float SHAKE_DURATION = 0.2f;
     private const float INTENSITY = 0.1f;
-    protected Grid _grid;
+    protected Grid _grid => Managers.Tile.Grid;
     protected Vector3Int _objectPosition;
     protected int _objectHp = 0;
     [SerializeField] protected Data.Game.PropDropTable _dropTable = null;
@@ -65,11 +65,6 @@ public abstract class Prop : MonoBehaviour
 
     void Start()
     {
-        if (_grid == null)
-        {
-            _grid = GameObject.FindWithTag("Grid")?.GetComponent<Grid>();
-        }
-
         SetObjectPosition();
         Init();
     }

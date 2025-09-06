@@ -10,7 +10,7 @@ public static class ContainerUtil
     {
         containerA.TryGet(slotA, out InventoryItem inventoryItemA);
         containerB.TryGet(slotB, out InventoryItem inventoryItemB);
-        Debug.Log($"Swap : {inventoryItemA == null} / {inventoryItemB == null}");
+
         if (inventoryItemA == null && inventoryItemB == null)
         {
             return;

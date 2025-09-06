@@ -52,6 +52,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29b9b6d5a5e040846b4f4e1b0c8272f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _selectedItem: {fileID: 0}
+  _selectedItemRect: {fileID: 0}
+  _selectedItemImage: {fileID: 0}
+  _selectedItemQuantity: {fileID: 0}
+  _itemSplit: {fileID: 0}
+  _itemSplitSlider: {fileID: 0}
+  _itemSplitQuantity: {fileID: 0}
+  _confirmButton: {fileID: 0}
+  _cancelButton: {fileID: 0}
 --- !u!1 &7092702603959839580
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,7 +249,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 10
+  m_ScrollSensitivity: 12
   m_Viewport: {fileID: 7092702605887473325}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
@@ -1464,7 +1473,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 10
+  m_ScrollSensitivity: 12
   m_Viewport: {fileID: 7092702605799581544}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}

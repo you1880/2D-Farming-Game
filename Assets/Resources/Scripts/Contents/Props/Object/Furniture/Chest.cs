@@ -10,6 +10,7 @@ public class Chest : Prop, IInteractable
     private ChestState _currentChestState = ChestState.Close;
     private ChestContainer _chestContainer;
     private UI_Chest _ui;
+    private AudioTrigger _audioTrigger;
 
     public ChestState CurrentChestState
     {
@@ -36,6 +37,7 @@ public class Chest : Prop, IInteractable
     protected override void Init()
     {
         PropType = Define.PropType.Furniture;
+        _audioTrigger = GetComponent<AudioTrigger>();
     }
 
     protected override void SetObjectPosition()
@@ -60,6 +62,7 @@ public class Chest : Prop, IInteractable
         if (CurrentChestState == ChestState.Opening)
         {
             CurrentChestState = ChestState.Closing;
+            _audioTrigger?.PlaySound(Define.EffectSoundType.ChestClose);
         }
     }
 
@@ -95,6 +98,7 @@ public class Chest : Prop, IInteractable
         }
 
         CurrentChestState = ChestState.Opening;
+        _audioTrigger?.PlaySound();
 
         _ui.InitChestUI(_chestContainer);
 

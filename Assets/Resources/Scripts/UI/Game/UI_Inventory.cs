@@ -24,13 +24,11 @@ public class UI_Inventory : UI_BaseInventory
         ItemLore,
         GoldText,
         FarmNameText,
-        DragItemQuantity
     }
 
     public enum GameObjects
     {
         InventoryContent,
-        DragItem
     }
 
     public enum Images
@@ -56,34 +54,29 @@ public class UI_Inventory : UI_BaseInventory
     {
         int clickedSlotId = GetSlotId(data.pointerClick.name);
 
-        if (clickedSlotId == INVALID_SLOT_ID)
-        {
-            return;
-        }
+        if (clickedSlotId == INVALID_SLOT_ID) return;
 
         if (_selectedSlotId == SLOT_NOT_SELECTED)
         {
             InventoryItem inventoryItem = inventoryDataManager.GetInventoryItem(clickedSlotId);
+            if (inventoryItem == null) return;
 
-            if (inventoryItem == null)
+            if (data.button == PointerEventData.InputButton.Right)
             {
+                if (inventoryItem.quantity > 1) ShowSplitUI(inventoryItem, clickedSlotId);
                 return;
             }
 
-            if (!_inventorySlots.TryGetValue(clickedSlotId, out InventorySlot slot))
-            {
-                return;
-            }
+            if (!_inventorySlots.TryGetValue(clickedSlotId, out InventorySlot slot)) return;
 
             _selectedSlotId = clickedSlotId;
             slot.SetSlotItem(inventoryItem);
             InitDragItem(inventoryItem);
+
+            return;
         }
-        else
-        {
-            int targetSlotId = clickedSlotId;
-            SwapInventorySlot(targetSlotId);
-        }
+
+        SwapInventorySlot(clickedSlotId);
     }
 
     private void OnSlotEntered(PointerEventData data)
@@ -165,22 +158,20 @@ public class UI_Inventory : UI_BaseInventory
     {
         _farmNameText = GetText((int)Texts.FarmNameText);
         _goldText = GetText((int)Texts.GoldText);
-        _dragItemQuantity = GetText((int)Texts.DragItemQuantity);
         _itemNameText = GetText((int)Texts.ItemName);
         _itemPriceText = GetText((int)Texts.PriceText);
         _itemLoreText = GetText((int)Texts.ItemLore);
 
         _contents = GetObject((int)GameObjects.InventoryContent);
-        _dragItem = GetObject((int)GameObjects.DragItem);
-        _dragItemRect = _dragItem.GetComponent<RectTransform>();
-        _dragItem.SetActive(false);
 
-        _dragItemImage = _dragItem.GetComponent<Image>();
         _infoSlotItemImage = GetImage((int)Images.InfoSlotItemImage);
         _infoSlotItemImage.color = Color.clear;
         _infoSlotGoldIcon = GetImage((int)Images.GoldIcon);
         _infoSlotGoldIcon.color = Color.clear;
         _characterImage = GetImage((int)Images.CharacterImage);
+
+        _selectedItem.SetActive(false);
+        _itemSplit.SetActive(false);
     }
 
     private void BindButtonEvent()

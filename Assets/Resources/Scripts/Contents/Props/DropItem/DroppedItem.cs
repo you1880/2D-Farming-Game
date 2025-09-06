@@ -13,11 +13,11 @@ public class DroppedItem : MonoBehaviour
     private bool _canLoot = false;
     private int _lootItemCode = 0;
     private int _lootItemQuantity = 0;
-    private int _lootItemGrade = 0;
+    private Define.ItemGrade _lootItemGrade = Define.ItemGrade.None;
     public bool CanLoot { get { return _canLoot; } }
     public Define.PropType PropType { get; private set; } = Define.PropType.DropItem;
 
-    public void SetDropItem(int itemCode, int quantity = 0)
+    public void SetDropItem(int itemCode, int quantity = 0, Define.ItemGrade itemGrade = Define.ItemGrade.None)
     {
         if (itemCode == 0)
         {
@@ -26,6 +26,7 @@ public class DroppedItem : MonoBehaviour
 
         _lootItemCode = itemCode;
         _lootItemQuantity = quantity;
+        _lootItemGrade = itemGrade;
 
         SetDropItemSprite();
         SetDropItemQunatity();

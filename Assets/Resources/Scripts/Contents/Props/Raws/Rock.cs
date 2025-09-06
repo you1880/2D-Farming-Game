@@ -11,4 +11,21 @@ public class Rock : Prop
         PropType = Define.PropType.Rock;
         _objectHp = ROCK_HP;
     }
+
+    public override void TryBreakProp(int damage = 1)
+    {
+        _objectHp -= damage;
+        ShakeOnHit();
+
+        if (_objectHp > 0)
+        {
+            return;
+        }
+
+        if (Managers.Game.TryBreakProp(transform.position, PropType))
+        {
+            GetComponent<AudioTrigger>()?.PlaySound();
+            Managers.Resource.Destroy(this.gameObject);
+        }
+    }
 }

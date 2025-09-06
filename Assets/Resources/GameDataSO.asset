@@ -117,6 +117,14 @@ MonoBehaviour:
     maxStackSize: 999
     purchaseCost: 0
     sellingCost: 30
+  - itemCode: 107
+    itemCategoryId: 3
+    itemTypeId: 1
+    itemName: Corn
+    itemLore: "\uC625\uC218\uC218\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 45
   - itemCode: 1001
     itemCategoryId: 2
     itemTypeId: 3
@@ -151,7 +159,7 @@ MonoBehaviour:
     sellingCost: 0
   - itemCode: 1005
     itemCategoryId: 2
-    itemTypeId: 9
+    itemTypeId: 8
     itemName: Basic Axe
     itemLore: "\uB3C4\uB07C\uB2E4."
     maxStackSize: 1
@@ -205,6 +213,14 @@ MonoBehaviour:
     maxStackSize: 999
     purchaseCost: 80
     sellingCost: 40
+  - itemCode: 1107
+    itemCategoryId: 2
+    itemTypeId: 7
+    itemName: Corn Seed
+    itemLore: "\uC625\uC218\uC218\uC528\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 140
+    sellingCost: 70
   - itemCode: 10001
     itemCategoryId: 4
     itemTypeId: 9
@@ -218,6 +234,15 @@ MonoBehaviour:
     itemTypeId: 9
     itemName: Furnace
     itemLore: "\uC544\uC774\uD15C\uC744 \uC81C\uB828\uD560 \uC218 \uC788\uB294 \uD654\uB85C\uC774\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 0
+  - itemCode: 10003
+    itemCategoryId: 4
+    itemTypeId: 9
+    itemName: DeliveryBox
+    itemLore: "\uC544\uC774\uD15C\uC744 \uB123\uC5B4\uB450\uBA74 \uBC24\uC5D0 \uB123\uC5B4\uB454
+      \uC544\uC774\uD15C\uC774 \uD310\uB9E4\uB429\uB2C8\uB2E4."
     maxStackSize: 999
     purchaseCost: 0
     sellingCost: 0
@@ -252,6 +277,11 @@ MonoBehaviour:
     repeatableRequireDays: 5
     canPlantSeason: 1
     isRepeatable: 1
+  - cropType: 7
+    requireDays: 13
+    repeatableRequireDays: 4
+    canPlantSeason: 1
+    isRepeatable: 1
   propDropDatas:
   - propType: 4
     dropItems:
@@ -259,42 +289,98 @@ MonoBehaviour:
       dropChance: 1
       minDropCount: 2
       maxDropCount: 5
+      useGrade: 0
+      dropItemGradeWeights:
+        None: 0
+        Bronze: 0
+        Silver: 0
+        Gold: 0
+        Amethyst: 0
   - propType: 5
     dropItems:
     - itemCode: 1
       dropChance: 1
       minDropCount: 1
       maxDropCount: 1
+      useGrade: 0
+      dropItemGradeWeights:
+        None: 0
+        Bronze: 0
+        Silver: 0
+        Gold: 0
+        Amethyst: 0
     - itemCode: 3
       dropChance: 0.1
       minDropCount: 1
       maxDropCount: 1
+      useGrade: 0
+      dropItemGradeWeights:
+        None: 0
+        Bronze: 0
+        Silver: 0
+        Gold: 0
+        Amethyst: 0
   - propType: 7
     dropItems:
     - itemCode: 1
       dropChance: 1
       minDropCount: 1
       maxDropCount: 1
+      useGrade: 0
+      dropItemGradeWeights:
+        None: 0
+        Bronze: 0
+        Silver: 0
+        Gold: 0
+        Amethyst: 0
     - itemCode: 3
       dropChance: 1
       minDropCount: 1
       maxDropCount: 3
+      useGrade: 0
+      dropItemGradeWeights:
+        None: 0
+        Bronze: 0
+        Silver: 0
+        Gold: 0
+        Amethyst: 0
   - propType: 8
     dropItems:
     - itemCode: 1
       dropChance: 1
       minDropCount: 1
       maxDropCount: 1
+      useGrade: 0
+      dropItemGradeWeights:
+        None: 0
+        Bronze: 0
+        Silver: 0
+        Gold: 0
+        Amethyst: 0
     - itemCode: 4
       dropChance: 1
       minDropCount: 1
       maxDropCount: 2
+      useGrade: 0
+      dropItemGradeWeights:
+        None: 0
+        Bronze: 0
+        Silver: 0
+        Gold: 0
+        Amethyst: 0
   - propType: 9
     dropItems:
     - itemCode: 5
       dropChance: 1
       minDropCount: 1
       maxDropCount: 4
+      useGrade: 0
+      dropItemGradeWeights:
+        None: 0
+        Bronze: 0
+        Silver: 0
+        Gold: 0
+        Amethyst: 0
   cropDropDatas:
   - cropType: 1
     dropItems:
@@ -302,52 +388,107 @@ MonoBehaviour:
       dropChance: 1
       minDropCount: 1
       maxDropCount: 1
+      useGrade: 1
+      dropItemGradeWeights:
+        None: 60
+        Bronze: 25
+        Silver: 10
+        Gold: 4
+        Amethyst: 1
   - cropType: 2
     dropItems:
     - itemCode: 102
       dropChance: 1
       minDropCount: 2
       maxDropCount: 3
+      useGrade: 1
+      dropItemGradeWeights:
+        None: 60
+        Bronze: 25
+        Silver: 10
+        Gold: 4
+        Amethyst: 1
   - cropType: 3
     dropItems:
     - itemCode: 103
       dropChance: 1
       minDropCount: 1
       maxDropCount: 1
+      useGrade: 1
+      dropItemGradeWeights:
+        None: 60
+        Bronze: 25
+        Silver: 10
+        Gold: 4
+        Amethyst: 1
   - cropType: 4
     dropItems:
     - itemCode: 104
       dropChance: 1
       minDropCount: 1
       maxDropCount: 1
+      useGrade: 1
+      dropItemGradeWeights:
+        None: 60
+        Bronze: 25
+        Silver: 10
+        Gold: 4
+        Amethyst: 1
   - cropType: 5
     dropItems:
     - itemCode: 105
       dropChance: 1
       minDropCount: 2
       maxDropCount: 4
+      useGrade: 1
+      dropItemGradeWeights:
+        None: 60
+        Bronze: 25
+        Silver: 10
+        Gold: 4
+        Amethyst: 1
   - cropType: 6
     dropItems:
     - itemCode: 106
       dropChance: 1
       minDropCount: 2
       maxDropCount: 3
+      useGrade: 1
+      dropItemGradeWeights:
+        None: 60
+        Bronze: 25
+        Silver: 10
+        Gold: 4
+        Amethyst: 1
+  - cropType: 7
+    dropItems:
+    - itemCode: 107
+      dropChance: 1
+      minDropCount: 1
+      maxDropCount: 2
+      useGrade: 1
+      dropItemGradeWeights:
+        None: 60
+        Bronze: 25
+        Silver: 10
+        Gold: 4
+        Amethyst: 1
   shopDatas:
   - shopType: 1
-    shopItemList: 4d0400004e0400004f040000500400005104000052040000
+    shopItemList: 4d0400004e0400004f04000050040000510400005204000053040000
   recipeDatas:
   - outputItemCode: 10001
     requireMaterials:
     - materialItemCode: 1
-      materialQuantity: 2
+      materialQuantity: 3
     - materialItemCode: 2
-      materialQuantity: 8
+      materialQuantity: 15
   - outputItemCode: 10002
     requireMaterials:
     - materialItemCode: 1
-      materialQuantity: 8
+      materialQuantity: 15
     - materialItemCode: 5
-      materialQuantity: 1
+      materialQuantity: 5
   smeltingDatas:
   - inputItemCode: 3
     inputQuantity: 5

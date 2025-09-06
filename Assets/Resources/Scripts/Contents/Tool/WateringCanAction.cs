@@ -17,13 +17,11 @@ public class WateringCanAction : IToolAction
         Vector3Int tilePosition = Managers.Tile.ConvertWorldToCell(mousePosition);
         if(!Managers.Data.TileDataManager.TryGetChangedTile(tilePosition, out GridTile tile))
         {
-            Debug.Log("No Tile");
             return;
         }
 
         if (tile is not FarmTile farmTile)
         {
-            Debug.Log("Not Farm Tile");
             return;
         }
 

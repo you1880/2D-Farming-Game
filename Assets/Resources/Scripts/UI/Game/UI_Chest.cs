@@ -14,16 +14,10 @@ public class UI_Chest : UI_BaseInventory
         ExitButton
     }
 
-    public enum Texts
-    {
-        DragItemQuantity
-    }
-
     public enum GameObjects
     {
         InventoryContent,
         ChestContent,
-        DragItem
     }
 
     private const string CHEST_SLOT_PREFIX = "ChestSlot";
@@ -36,6 +30,7 @@ public class UI_Chest : UI_BaseInventory
     private bool _uiReady = false;
     private bool _bindChestEvent = false;
     private bool _closed;
+    private Panel _splitPanel;
     public event Action ClosedAction;
 
     public void InitChestUI(ChestContainer chestContainer)
@@ -83,25 +78,24 @@ public class UI_Chest : UI_BaseInventory
     {
         int clickedSlotId = (panel == Panel.Inventory) ? GetSlotId(data.pointerClick.name) : GetSlotId(data.pointerClick.name, CHEST_SLOT_PREFIX);
 
-        if (clickedSlotId == INVALID_SLOT_ID)
+        if (clickedSlotId == INVALID_SLOT_ID || _chestContainer == null)
         {
             return;
         }
 
         if (_selected is null)
         {
-            InventoryItem inventoryItem = null;
-            if (panel == Panel.Inventory)
-            {
-                inventoryItem = inventoryDataManager.GetInventoryItem(clickedSlotId);
-            }
-            else if (panel == Panel.Chest)
-            {
-                _chestContainer?.TryGet(clickedSlotId, out inventoryItem);
-            }
+            InventoryItem inventoryItem = panel == Panel.Inventory
+                ? inventoryDataManager.GetInventoryItem(clickedSlotId) 
+                : _chestContainer.TryGet(clickedSlotId, out InventoryItem inv)  ? inv : null;
 
-            if (inventoryItem == null)
+            if (inventoryItem == null) return;
+
+
+            if (data.button == PointerEventData.InputButton.Right)
             {
+                _splitPanel = panel;
+                ShowSplitUI(inventoryItem, clickedSlotId);
                 return;
             }
 
@@ -154,19 +148,16 @@ public class UI_Chest : UI_BaseInventory
     private void BindUIElements()
     {
         Bind<Button>(typeof(Buttons));
-        Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
     }
 
     private void GetUIElements()
     {
-        _dragItemQuantity = GetText((int)Texts.DragItemQuantity);
         _inventoryContents = GetObject((int)GameObjects.InventoryContent);
         _chestContents = GetObject((int)GameObjects.ChestContent);
-        _dragItem = GetObject((int)GameObjects.DragItem);
-        _dragItemRect = _dragItem.GetComponent<RectTransform>();
-        _dragItemImage = _dragItem.GetComponent<Image>();
-        _dragItem.SetActive(false);
+        
+        _selectedItem.SetActive(false);
+        _itemSplit.SetActive(false);
     }
 
     private void BindButtonEvent()
@@ -188,6 +179,31 @@ public class UI_Chest : UI_BaseInventory
 
             slotObject.BindEvent(evt => OnSlotClicked(panel, evt));
         }
+    }
+
+    protected override void OnConfirmButtonClicked(PointerEventData data)
+    {
+        InventoryItem cur = null;
+        IItemContainer itemContainer = null;
+
+        if (_splitPanel == Panel.Inventory)
+        {
+            cur = inventoryDataManager.GetInventoryItem(_splitSlotId);
+        }
+        else if (_splitPanel == Panel.Chest)
+        {
+            _chestContainer.TryGet(_splitSlotId, out cur);
+            itemContainer = _chestContainer;
+        }
+
+        if (cur == null || cur.itemCode != _splitInventoryitem.itemCode || cur.quantity < 2)
+        {
+            ClearSplitUI();
+            return;
+        }
+
+        inventoryDataManager.TrySplitItem(_splitInventoryitem, _splitSlotId, _splitQuantity, itemContainer);
+        ClearSplitUI();
     }
 
     public override void Init()
@@ -241,5 +257,10 @@ public class UI_Chest : UI_BaseInventory
         ChangeCloseState();
         UnbindChestEvent();
         inventoryDataManager.OnInventoryChanged -= UpdateInventoryUI;
+    }
+
+    public override void Refresh()
+    {
+        SetAllSlotItem();
     }
 }

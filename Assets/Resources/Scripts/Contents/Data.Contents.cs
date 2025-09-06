@@ -60,9 +60,9 @@ namespace Data.Inventory
     {
         public int itemCode;
         public int quantity;
-        public int itemGrade;
+        public Define.ItemGrade itemGrade;
 
-        public InventoryItem(int itemCode, int quantity, int itemGrade)
+        public InventoryItem(int itemCode, int quantity, Define.ItemGrade itemGrade)
         {
             this.itemCode = itemCode;
             this.quantity = quantity;
@@ -75,9 +75,9 @@ namespace Data.Inventory
         public int slotId;
         public int itemCode;
         public int quantity;
-        public int itemGrade;
+        public Define.ItemGrade itemGrade;
 
-        public InventoryItemSave(int slotId, int itemCode, int quantity, int itemGrade)
+        public InventoryItemSave(int slotId, int itemCode, int quantity, Define.ItemGrade itemGrade)
         {
             this.slotId = slotId;
             this.itemCode = itemCode;
@@ -213,6 +213,19 @@ namespace Data.Game
         public float dropChance;
         public int minDropCount;
         public int maxDropCount;
+        public bool useGrade;
+        public DropItemGradeWeights dropItemGradeWeights;
+    }
+
+    [System.Serializable]
+    public class DropItemGradeWeights
+    {
+        public float None;
+        public float Bronze;
+        public float Silver;
+        public float Gold;
+        public float Amethyst;
+        public float Total => None + Bronze + Silver + Gold + Amethyst;
     }
 
     [System.Serializable]

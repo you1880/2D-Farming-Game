@@ -111,13 +111,13 @@ public class UI_Setting : UI_Base
     #region Slider
     private void OnBgmSliderChanged(float sliderValue)
     {
-        //Managers.Sound.SetBgmVolume(sliderValue);
+        Managers.Sound.SetBgmVolume(sliderValue);
         _bgmValue.text = $"{sliderValue}";
     }
 
     private void OnEffectSliderChanged(float sliderValue)
     {
-        //Managers.Sound.EffectVolume = sliderValue;
+        Managers.Sound.EffectVolume = sliderValue;
         _effectValue.text = $"{sliderValue}";
     }
 
@@ -127,8 +127,8 @@ public class UI_Setting : UI_Base
         _bgmSlider.minValue = _effectSlider.minValue = 0;
         _bgmSlider.maxValue = _effectSlider.maxValue = 100;
 
-        //_bgmSlider.value = Managers.Sound.BgmVolume * 100.0f;
-        //_effectSlider.value = Managers.Sound.EffectVolume * 100.0f;
+        _bgmSlider.value = Managers.Sound.BgmVolume * 100.0f;
+        _effectSlider.value = Managers.Sound.EffectVolume * 100.0f;
 
         _bgmValue.text = $"{_bgmSlider.value}";
         _effectValue.text = $"{_effectSlider.value}";

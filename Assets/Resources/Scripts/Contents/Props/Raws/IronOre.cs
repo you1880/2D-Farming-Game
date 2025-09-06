@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IronOre : Prop
+public class IronOre : Rock
 {
     private const int IRON_ORE_HP = 5;
     protected override void Init()

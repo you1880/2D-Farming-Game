@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Data.Player;
 using Data.Tile;
 using UnityEngine;
@@ -8,9 +9,11 @@ public class GameFlowService
 {
     private UserDataManager userDataManager => Managers.Data.UserDataManager;
     private readonly FarmingService _farmingService;
-    public GameFlowService(FarmingService farmingService)
+    private readonly DeliveryService _deliveryService;
+    public GameFlowService(FarmingService farmingService, DeliveryService deliveryService)
     {
         _farmingService = farmingService;
+        _deliveryService = deliveryService;
     }
 
     public void StartGame(int saveNumber)
@@ -38,22 +41,20 @@ public class GameFlowService
 
     public void DayEnd()
     {
-        Dictionary<Vector2Int, GridTile> changedTiles = new Dictionary<Vector2Int, GridTile>();
+        var tiles = Managers.Data.TileDataManager.ChangedTiles.ToArray();
 
-        foreach (var tile in Managers.Data.TileDataManager.ChangedTiles)
+        foreach (var tile in tiles)
         {
             if (tile.Value is FarmTile farmTile)
             {
-                changedTiles[tile.Key] = _farmingService.GrowCrop(farmTile);
+                Managers.Data.TileDataManager.SetChangedTile(tile.Key, _farmingService.GrowCrop(farmTile));
             }
         }
 
-        foreach (var tile in changedTiles)
-        {
-            Managers.Data.TileDataManager.SetChangedTile(tile.Key, tile.Value);
-        }
-
+        _deliveryService.ClearInputItemList();
+        
         Managers.Area.SetCurrentArea(Define.Area.FarmHouse);
+        Managers.Prop.ClearHarvestedTrees();
         Managers.Data.SaveData(Managers.Data.CurrentDataNumber);
         Managers.Scene.LoadNextScene(Define.SceneType.Main);
     }

@@ -78,11 +78,11 @@ public class PlayerToolController : MonoBehaviour
 
                 if (hitObject.TryGetComponent<IInteractable>(out IInteractable interactable))
                 {
-                    interactable.Interact(gameObject);
+                    interactable?.Interact(gameObject);
                 }
                 else if (hitObject.TryGetComponent<IPointInteractable>(out IPointInteractable pointInteractable))
                 {
-                    pointInteractable.Interact(gameObject, mousePos2D);
+                    pointInteractable?.Interact(gameObject, mousePos2D);
                 }
 
                 break;

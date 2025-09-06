@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Data.Inventory;
 using Data.Player;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class InventorySlot
@@ -50,8 +52,16 @@ public class InventorySlot
         _slotImage.sprite = Managers.Resource.LoadItemSprite(item.itemCode);
         _slotImage.color = Color.white;
 
-        //TODO Item Grade Image 불러오기
-        // ()
+        if (item.itemGrade != Define.ItemGrade.None)
+        {
+            _slotGradeImage.sprite = Managers.Resource.LoadItemGradeSprite(item.itemGrade);
+            _slotGradeImage.color = Color.white;
+        }
+        else
+        {
+            _slotGradeImage.color = new Color(255.0f, 255.0f, 255.0f, 0.0f);
+        }
+
         _slotQuantity.text = item.quantity > 1 ? $"{item.quantity}" : "";
     }
 }
@@ -62,14 +72,23 @@ public class UI_BaseInventory : UI_Base
     protected const int MAX_SLOT_NUMBER = 30;
     protected const int SLOT_NOT_SELECTED = -1;
     protected const int INVALID_SLOT_ID = -2;
-    protected Vector2 _dragImageOffset = new Vector2(30.0f, -30.0f);
     protected InventoryDataManager inventoryDataManager => Managers.Data.InventoryDataManager;
     protected Dictionary<int, InventorySlot> _inventorySlots = new Dictionary<int, InventorySlot>();
-    protected GameObject _dragItem;
-    protected RectTransform _dragItemRect;
-    protected Image _dragItemImage;
-    protected TextMeshProUGUI _dragItemQuantity;
+    [SerializeField] protected GameObject _selectedItem;
+    [SerializeField] protected RectTransform _selectedItemRect;
+    [SerializeField] protected Image _selectedItemImage;
+    [SerializeField] protected TextMeshProUGUI _selectedItemQuantity;
+    [SerializeField] protected GameObject _itemSplit;
+    [SerializeField] protected Image _splitItemImage;
+    [SerializeField] protected Slider _itemSplitSlider;
+    [SerializeField] protected TextMeshProUGUI _itemSplitQuantity;
+    [SerializeField] protected Button _confirmButton;
+    [SerializeField] protected Button _cancelButton;
     protected int _selectedSlotId = SLOT_NOT_SELECTED;
+    private bool _isSplitInitailized = false;
+    protected InventoryItem _splitInventoryitem = null;
+    protected int _splitQuantity = 0;
+    protected int _splitSlotId = SLOT_NOT_SELECTED;
 
     protected int GetSlotId(string slotName, string prefix = SLOT_PREFIX)
     {
@@ -98,43 +117,33 @@ public class UI_BaseInventory : UI_Base
         }
     }
 
-    protected void InitDragItem(InventoryItem item)
+    protected void InitDragItem(InventoryItem inventoryItem)
     {
-        if (_dragItem == null || _dragItemImage == null || _dragItemQuantity == null)
-        {
-            return;
-        }
+        _selectedItem.SetActive(true);
+        _selectedItemImage.sprite = Managers.Resource.LoadItemSprite(inventoryItem.itemCode);
 
-        _dragItem.SetActive(true);
-        _dragItemImage.sprite = Managers.Resource.LoadItemSprite(item.itemCode);
-
-        if (item.quantity > 1)
+        if (inventoryItem.quantity > 1)
         {
-            _dragItemQuantity.text = $"{item.quantity}";
+            _selectedItemQuantity.text = $"{inventoryItem.quantity}";
         }
     }
 
     protected void DeactivateDragItem()
     {
-        if (_dragItem == null)
+        if (!_selectedItem.activeSelf)
         {
             return;
         }
 
-        if (!_dragItem.activeSelf)
-        {
-            return;
-        }
+        _selectedItemQuantity.text = "";
+        _selectedItemImage.sprite = null;
 
-        _dragItemQuantity.text = "";
-        _dragItemImage.sprite = null;
-
-        _dragItem.SetActive(false);
+        _selectedItem.SetActive(false);
     }
 
     protected void MoveUIElemet()
     {
-        if (_dragItem != null)
+        if (_selectedItem.activeSelf)
         {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 Managers.UI.Root.transform as RectTransform,
@@ -142,7 +151,7 @@ public class UI_BaseInventory : UI_Base
                 Camera.main,
                 out Vector2 localPoint);
 
-            _dragItemRect.anchoredPosition = localPoint;
+            _selectedItemRect.anchoredPosition = localPoint;
         }
     }
 
@@ -163,6 +172,80 @@ public class UI_BaseInventory : UI_Base
         _selectedSlotId = SLOT_NOT_SELECTED;
     }
 
+    protected void ShowSplitUI(InventoryItem inventoryItem, int slotId)
+    {
+        if (inventoryItem == null || inventoryItem.quantity < 2)
+        {
+            return;
+        }
+
+        EnsureSplitUIInit();
+
+        _itemSplit.SetActive(true);
+        
+        BindSplitUI(inventoryItem, slotId);
+    }
+
+    private void EnsureSplitUIInit()
+    {
+        if (_isSplitInitailized)
+        {
+            return;
+        }
+
+        _isSplitInitailized = true;
+
+        _itemSplitSlider.wholeNumbers = true;
+        _itemSplitSlider.onValueChanged.AddListener(OnSliderChanged);
+        _confirmButton.gameObject.BindEvent(OnConfirmButtonClicked);
+        _cancelButton.gameObject.BindEvent(OnCancelButtonClicked);
+    }
+
+    private void BindSplitUI(InventoryItem inventoryItem, int slotId)
+    {
+        _splitInventoryitem = inventoryItem;
+        _splitSlotId = slotId;
+        _splitQuantity = Math.Max(1, inventoryItem.quantity - 1);
+
+        _itemSplitSlider.minValue = 1;
+        _itemSplitSlider.maxValue = Math.Max(1, _splitQuantity);
+        _itemSplitSlider.SetValueWithoutNotify(_splitQuantity);
+
+        _splitItemImage.sprite = Managers.Resource.LoadItemSprite(inventoryItem.itemCode);
+
+        OnSliderChanged(_splitQuantity);
+    }
+
+    private void OnSliderChanged(float split)
+    {
+        _splitQuantity = Mathf.FloorToInt(split);
+        if (_itemSplitQuantity) _itemSplitQuantity.text = _splitQuantity.ToString();
+    }
+
+    protected void ClearSplitUI()
+    {
+        _splitInventoryitem = null;
+        _splitQuantity = 0;
+        _itemSplit.SetActive(false);
+    }
+
+    protected virtual void OnConfirmButtonClicked(PointerEventData data)
+    {
+        InventoryItem cur = inventoryDataManager.GetInventoryItem(_splitSlotId);
+
+        if (cur == null || cur.itemCode != _splitInventoryitem.itemCode || cur.quantity < 2)
+        {
+            ClearSplitUI();
+            return;
+        }
+
+        inventoryDataManager.TrySplitItem(_splitInventoryitem, _splitSlotId, _splitQuantity);
+        ClearSplitUI();
+    }
+
+    private void OnCancelButtonClicked(PointerEventData data)
+        => ClearSplitUI();
+
     public override void Init() { }
 
     private void Update()
@@ -179,5 +262,8 @@ public class UI_BaseInventory : UI_Base
     private void OnDisable()
     {
         inventoryDataManager.OnInventoryChanged -= UpdateInventoryUI;
+
+        _selectedItem.SetActive(false);
+        _itemSplit.SetActive(false);
     }
 }

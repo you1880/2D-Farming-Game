@@ -11,8 +11,6 @@ public class Tree : Prop
         _objectHp = TREE_HP;
     }
 
-    protected override void SetObjectPosition() { }
-
     public override void TryBreakProp(int damage = 1)
     {
         _objectHp -= damage;
@@ -25,6 +23,7 @@ public class Tree : Prop
 
         if (Managers.Game.TryBreakProp(transform.position, PropType))
         {
+            Managers.Prop.RegisterTree(_objectPosition);
             Managers.Resource.Destroy(this.gameObject);
         }
     }

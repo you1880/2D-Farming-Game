@@ -45,6 +45,30 @@ public class Define
         RClick
     }
 
+    #region Sound
+    public enum SoundType
+    {
+        Bgm,
+        Effect,
+        Count,
+    }
+
+    public enum EffectSoundType
+    {
+        None,
+        Door,
+        ChestOpen,
+        ChestClose,
+        FootstepGrass,
+        FootstepRoad,
+        FootstepHouseFloor,
+        FootstepFarmland,
+        RockBreak,
+        FurnaceOn,
+        DeliveryBoxInput,
+    }
+    #endregion
+
     #region Player    
     public enum PlayerState
     {
@@ -108,6 +132,7 @@ public class Define
         Chest,
         CraftingTable,
         Furnace,
+        DeliveryBox,
     }
     #endregion
 
@@ -166,11 +191,21 @@ public class Define
         Turnip,
         Pepper,
         Tomato,
+        Corn,
     }
 
     public enum ShopType
     {
         None,
         Town,
+    }
+
+    public enum SurfaceType
+    {
+        None,
+        Grass,
+        Farmland,
+        Road,
+        HouseFloor
     }
 }

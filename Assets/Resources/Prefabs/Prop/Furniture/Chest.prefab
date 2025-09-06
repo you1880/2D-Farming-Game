@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7987608521710555433}
   - component: {fileID: 7987608521710555438}
   - component: {fileID: 7987608521710555437}
+  - component: {fileID: 270503610534101882}
   m_Layer: 0
   m_Name: Chest
   m_TagString: Untagged
@@ -84,7 +85,7 @@ SpriteRenderer:
   m_Size: {x: 1.125, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &7987608521710555433
@@ -153,3 +154,17 @@ MonoBehaviour:
       minDropCount: 1
       maxDropCount: 1
   _chestAnimator: {fileID: 7987608521710555433}
+--- !u!114 &270503610534101882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7987608521710555434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b5f7b65a03dcb643a49f92d6bce280c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EffectSoundType: 2
+  MinInterval: 0.1
