@@ -133,6 +133,7 @@ public class Define
         CraftingTable,
         Furnace,
         DeliveryBox,
+        Sprinkler,
     }
     #endregion
 

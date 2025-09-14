@@ -11,7 +11,8 @@ public class FurnitureAction : IToolAction
     private readonly Dictionary<int, Define.FurnitureType> _furnitureMaps = new Dictionary<int, Define.FurnitureType>
     {
         {10001, Define.FurnitureType.Chest},
-        {10002, Define.FurnitureType.Furnace}
+        {10002, Define.FurnitureType.Furnace},
+        {10004, Define.FurnitureType.Sprinkler}
     };
     private InventoryItem _inventoryItem;
     private Define.FurnitureType _furnitureType;
@@ -62,14 +63,18 @@ public class FurnitureAction : IToolAction
         }
         Data.Prop.Furniture furniture = null;
 
-        switch (_inventoryItem.itemCode)
+        switch (_furnitureType)
         {
-            case 10001:
+            case Define.FurnitureType.Chest:
                 furniture = new Data.Prop.Chest(Managers.Data.ContainerService.CreateChestContainer());
                 break;
-            case 10002:
+            case Define.FurnitureType.Furnace:
                 furniture = new Data.Prop.Furnace();
                 break;
+            case Define.FurnitureType.Sprinkler:
+                furniture = new Data.Prop.Sprinkler();
+                break;
+            
         }
 
         if (Managers.Data.InventoryDataManager.UseQuickSlotItem())

@@ -54,6 +54,7 @@ public class GameTimeManager
     public int CurrentDay { get; private set; } = 1;
     public int CurrentHour { get; private set; } = MORNING_TIME;
     public int CurrentMinute { get; private set; } = 0;
+    public bool StartDay = true;
     public event Action OnTimeChanged;
 
     public void Init()
@@ -147,6 +148,7 @@ public class GameTimeManager
         AdvanceTime();
         CurrentHour = MORNING_TIME;
         CurrentMinute = 0;
+        StartDay = true;
 
         PlayerController playerController = GameObject.FindWithTag("Player")?.GetComponent<PlayerController>();
         Managers.Scene.LoadNextScene(Define.SceneType.DayEnd, playerController);
@@ -167,7 +169,7 @@ public class GameTimeManager
             CurrentDay = 1;
         }
 
-        if(CurrentSeason == Define.Season.Winter)
+        if(CurrentSeason > Define.Season.Winter)
         {
             CurrentSeason = Define.Season.Spring;
             CurrentYear++;

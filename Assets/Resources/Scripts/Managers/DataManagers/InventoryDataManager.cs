@@ -13,6 +13,7 @@ public class InventoryDataManager
     private const int DEFAULT_INVENTORY_CAPACITY = 30;
     public event Action<int> OnInventoryChanged;
     public int CurrentQuickSlotId { get; set; } = 0;
+    public IItemContainer PlayerContainer => _playerContainer;
 
     public InventoryDataManager(IItemContainer playerContainer = null, IItemMeta meta = null)
     {
@@ -139,18 +140,8 @@ public class InventoryDataManager
     public bool HasAtLeastItemInInventory(int itemCode, int quantity)
         => ContainerUtil.HasAtLeastItem(_playerContainer, itemCode, quantity);
 
-    public bool HasAtLeastItemsInInventory(List<(int itemCode, int quantity)> requires)
+    public bool HasAtLeastItemsInInventory(IReadOnlyList<(int itemCode, int quantity)> requires)
         => ContainerUtil.HasAtLeastItems(_playerContainer, requires);
-
-    public void SwapSlot(IItemContainer selectItemContainer, int selectedSlotId, IItemContainer targetItemContainer, int targetSlotId)
-    {
-        if (!IsValidSlot(selectItemContainer, selectedSlotId, targetItemContainer, targetSlotId))
-        {
-            return;
-        }
-
-        ContainerUtil.SwapOrMerge(selectItemContainer, selectedSlotId, targetItemContainer, targetSlotId, _meta);
-    }
 
     public void SwapInventorySlot(int selectedSlotId, int targetSlotId)
         => SwapSlot(_playerContainer, selectedSlotId, _playerContainer, targetSlotId);
@@ -163,6 +154,16 @@ public class InventoryDataManager
 
     public void SwapBetweenITC(IItemContainer itemContainer, int selectedSlotId, int targetSlotId)
         => SwapSlot(_playerContainer, selectedSlotId, itemContainer, targetSlotId);
+
+    private void SwapSlot(IItemContainer selectItemContainer, int selectedSlotId, IItemContainer targetItemContainer, int targetSlotId)
+    {
+        if (!IsValidSlot(selectItemContainer, selectedSlotId, targetItemContainer, targetSlotId))
+        {
+            return;
+        }
+
+        ContainerUtil.SwapOrMerge(selectItemContainer, selectedSlotId, targetItemContainer, targetSlotId, _meta);
+    }
 
     private bool IsValidSlot(IItemContainer selectItemContainer, int selectedSlotId, IItemContainer targetItemContainer, int targetSlotId)
     {

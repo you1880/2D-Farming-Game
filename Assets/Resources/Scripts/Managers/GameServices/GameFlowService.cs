@@ -52,10 +52,35 @@ public class GameFlowService
         }
 
         _deliveryService.ClearInputItemList();
-        
-        Managers.Area.SetCurrentArea(Define.Area.FarmHouse);
+
         Managers.Prop.ClearHarvestedTrees();
         Managers.Data.SaveData(Managers.Data.CurrentDataNumber);
         Managers.Scene.LoadNextScene(Define.SceneType.Main);
+    }
+
+    public void DayStart()
+    {
+        if (!Managers.Time.StartDay)
+        {
+            Debug.Log("?");
+            return;
+        }
+
+        var tiles = Managers.Data.TileDataManager.ChangedTiles.ToArray();
+
+        foreach (var tile in tiles)
+        {
+            if (tile.Value is PropTile { prop: Data.Prop.Sprinkler sprinkler })
+            {
+                _farmingService.SprayWater(sprinkler.radius, tile.Key);
+            }
+        }
+
+        Managers.Time.StartDay = false;
+        Managers.Time.Init();
+        Managers.Time.FlowTime();
+
+        Managers.Area.SetCurrentArea(Define.Area.FarmHouse);
+        Managers.Area.Init();
     }
 }

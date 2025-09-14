@@ -156,13 +156,11 @@ public class PropManager
         }
 
         string furniturePath = $"{path}/{Enum.GetName(typeof(Define.FurnitureType), furnitureType)}";
-        GameObject propObject = null;
+        GameObject propObject = Managers.Resource.Instantiate(furniturePath, Furnitures.transform);
 
         switch (furnitureType)
         {
             case Define.FurnitureType.Chest:
-                propObject = Managers.Resource.Instantiate(furniturePath, Furnitures.transform);
-
                 if (propObject != null)
                 {
                     string id = propSpawnData.chestId ?? Managers.Data.ContainerService.CreateChestContainer();
@@ -170,10 +168,13 @@ public class PropManager
 
                     propObject.GetComponent<Chest>()?.SetChestId(chestContainer);
                 }
-
                 break;
             case Define.FurnitureType.Furnace:
-                propObject = Managers.Resource.Instantiate(furniturePath, Furnitures.transform);
+                if (propObject != null)
+                {
+                    Data.Prop.Furnace furnace = propSpawnData.furnace ?? null;
+                    propObject.GetComponent<Furnace>()?.SetFurnaceStatus(furnace);
+                }
                 break;
         }
 

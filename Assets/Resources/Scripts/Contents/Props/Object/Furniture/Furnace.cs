@@ -17,7 +17,6 @@ public class Furnace : Prop, IInteractable
     protected override void Init()
     {
         PropType = Define.PropType.Furniture;
-        SetFurnaceStatus();
         ChangeOutputSprite(true);
     }
 
@@ -47,8 +46,6 @@ public class Furnace : Prop, IInteractable
             return;
         }
 
-        Debug.Log($"STATUS : {_currentFurnace.isMelting} / {_currentFurnace.isProcessingDone}");
-
         if (_currentFurnace.isProcessingDone)
         {
             CollectOutput();
@@ -64,16 +61,18 @@ public class Furnace : Prop, IInteractable
         return Util.IsReachable(transform.position, caller.transform.position);
     }
 
-    private void SetFurnaceStatus()
+    public void SetFurnaceStatus(Data.Prop.Furnace furnace)
     {
-        if (!Managers.Data.TileDataManager.TryGetChangedTile(_objectPosition, out Data.Tile.GridTile tile))
-        {
-            return;
-        }
-
-        if (tile is PropTile { prop: Data.Prop.Furnace furnace})
+        if (furnace != null)
         {
             _currentFurnace = furnace;
+        }
+        else
+        {
+            if (!Managers.Data.TileDataManager.TryGetChangedTile(_objectPosition, out GridTile tile) && tile is PropTile { prop: Data.Prop.Furnace fur })
+            {
+                _currentFurnace = fur;
+            }
         }
 
         if (_currentFurnace == null)

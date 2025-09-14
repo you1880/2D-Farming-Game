@@ -32,6 +32,7 @@ public class GameManager
         => _gameFlowService.StartNewGame(saveNumber, name, farmName, gender);
 
     public void DayEnd() => _gameFlowService.DayEnd();
+    public void DayStart() => _gameFlowService.DayStart();
 
     public bool TryBreakProp(Vector3Int tilePosition, Define.PropType propType, Data.Game.PropDropTable propDropTable = null)
         => _propService.TryBreakProp(tilePosition, propType, propDropTable);
@@ -54,7 +55,7 @@ public class GameManager
     public bool TryAddDeliveryItem()
         => _deliveryService.TryAddDeliveryItem();
 
-    public bool GetAndAddLastInputItem()
+    public bool GetOrAddLastInputItem()
         => _deliveryService.GetAndAddLastInputItem();
 
     public List<InventoryItem> GetInputItems()

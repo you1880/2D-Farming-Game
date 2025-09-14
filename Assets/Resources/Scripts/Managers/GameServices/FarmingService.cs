@@ -4,7 +4,7 @@ using Data.Game;
 using Data.Tile;
 using UnityEngine;
 
-public class FarmingService 
+public class FarmingService
 {
     private readonly PropService _propService;
     public FarmingService(PropService propService)
@@ -113,7 +113,29 @@ public class FarmingService
                 }
             }
         }
-        
+
         return new FarmTile(farmTile.x, farmTile.y, farmTile.isPlowed, false, plantedCrop);
+    }
+
+    public void SprayWater(int radius, Vector2Int position)
+    {
+        for (int dx = -radius; dx <= radius; dx++)
+        {
+            for (int dy = -radius; dy <= radius; dy++)
+            {
+                Vector2Int pos = new Vector2Int(position.x + dx, position.y + dy);
+
+                if (!Managers.Data.TileDataManager.TryGetChangedTile(pos, out GridTile tile))
+                {
+                    continue;
+                }
+
+                if (tile is FarmTile farmTile && farmTile.isPlowed)
+                {
+                    farmTile = new FarmTile(farmTile.x, farmTile.y, farmTile.isPlowed, true, farmTile.plantedCrop);
+                    Managers.Data.TileDataManager.SetChangedTile(pos, farmTile);
+                }
+            }
+        }
     }
 }

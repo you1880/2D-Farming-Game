@@ -72,8 +72,8 @@ public class UI_BaseInventory : UI_Base
     protected const int MAX_SLOT_NUMBER = 30;
     protected const int SLOT_NOT_SELECTED = -1;
     protected const int INVALID_SLOT_ID = -2;
-    protected InventoryDataManager inventoryDataManager => Managers.Data.InventoryDataManager;
     protected Dictionary<int, InventorySlot> _inventorySlots = new Dictionary<int, InventorySlot>();
+    protected InventoryDataManager inventoryDataManager => Managers.Data.InventoryDataManager;
     [SerializeField] protected GameObject _selectedItem;
     [SerializeField] protected RectTransform _selectedItemRect;
     [SerializeField] protected Image _selectedItemImage;
@@ -137,7 +137,8 @@ public class UI_BaseInventory : UI_Base
 
         _selectedItemQuantity.text = "";
         _selectedItemImage.sprite = null;
-
+        _selectedSlotId = SLOT_NOT_SELECTED;
+        
         _selectedItem.SetActive(false);
     }
 

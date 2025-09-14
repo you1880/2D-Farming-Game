@@ -73,8 +73,8 @@ public abstract class UI_Base : MonoBehaviour
         }
     }
 
-    public abstract void Init();
     public virtual void Refresh() { }
+    public abstract void Init();
 
     private void Start()
     {

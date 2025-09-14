@@ -24,14 +24,20 @@ public class TileDataManager
     public void SetChangedTile(Vector3Int tilePosition, GridTile tile)
     {
         Vector2Int pos = new Vector2Int(tilePosition.x, tilePosition.y);
-
-        _changedTiles[pos] = tile;
-        OnTileDataChanged?.Invoke(pos);
+        SetChangedTile(pos, tile);
     }
 
     public void SetChangedTile(Vector2Int tilePosition, GridTile tile)
     {
-        _changedTiles[tilePosition] = tile;
+        if (tile == null)
+        {
+            _changedTiles.Remove(tilePosition);
+        }
+        else
+        {
+            _changedTiles[tilePosition] = tile;
+        }
+
         OnTileDataChanged?.Invoke(tilePosition);
     }
 

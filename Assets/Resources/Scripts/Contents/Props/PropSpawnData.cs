@@ -23,6 +23,7 @@ public class PropSpawnData
     #region  Furniture
     public Define.FurnitureType? furnitureType;
     public string? chestId;
-    public bool? isMelting;
+    public Data.Prop.Furnace? furnace;
+    public Data.Prop.Sprinkler? sprinkler;
     #endregion
 }

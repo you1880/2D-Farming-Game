@@ -246,6 +246,14 @@ MonoBehaviour:
     maxStackSize: 999
     purchaseCost: 0
     sellingCost: 0
+  - itemCode: 10004
+    itemCategoryId: 4
+    itemTypeId: 9
+    itemName: Sprinkler
+    itemLore: "\uC8FC\uBCC0 3x3\uD0C0\uC77C\uC5D0 \uBB3C\uC744 \uBFCC\uB9BD\uB2C8\uB2E4."
+    maxStackSize: 999
+    purchaseCost: 0
+    sellingCost: 0
   cropDatas:
   - cropType: 1
     requireDays: 13
@@ -489,6 +497,12 @@ MonoBehaviour:
       materialQuantity: 15
     - materialItemCode: 5
       materialQuantity: 5
+  - outputItemCode: 10004
+    requireMaterials:
+    - materialItemCode: 6
+      materialQuantity: 10
+    - materialItemCode: 7
+      materialQuantity: 3
   smeltingDatas:
   - inputItemCode: 3
     inputQuantity: 5

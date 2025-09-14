@@ -106,7 +106,7 @@ public static class ContainerUtil
     public static bool HasAtLeastItem(IItemContainer container, int itemCode, int count)
         => container.CountContainerItem(itemCode) >= count;
 
-    public static bool HasAtLeastItems(IItemContainer container, List<(int itemCode, int quantity)> requires)
+    public static bool HasAtLeastItems(IItemContainer container, IReadOnlyList<(int itemCode, int quantity)> requires)
     {
         Dictionary<int, int> dict = CountAllContainerItems(container);
 

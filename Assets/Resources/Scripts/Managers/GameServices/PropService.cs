@@ -7,8 +7,6 @@ using UnityEngine;
 
 public class PropService
 {
-    private HashSet<Vector3Int> _harvestedTreeSet = new HashSet<Vector3Int>();
-
     public bool TryBreakProp(Vector3Int tilePosition, Define.PropType propType, Data.Game.PropDropTable propDropTable = null)
     {
         PropDropTable dropTable = propDropTable ?? Managers.Data.GameDataManager.GetPropDropTable(propType);
@@ -28,13 +26,12 @@ public class PropService
             return false;
         }
 
-
         foreach (DropItem dropItem in dropTable.dropItems)
         {
             SpawnDropItem(tilePosition, dropItem);
         }
 
-        Managers.Data.TileDataManager.SetChangedTile(tilePosition, new PropTile(tilePosition.x, tilePosition.y, null));
+        Managers.Data.TileDataManager.SetChangedTile(tilePosition, null);
         return true;
     }
 

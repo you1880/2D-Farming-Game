@@ -50,13 +50,22 @@ public class MainScene : BaseScene
             }
             else if (propTile.prop is Data.Prop.Furnace furnace)
             {
-                
                 Managers.Prop.SpawnProp(new PropSpawnData
                 {
                     tilePosition = pos,
                     propType = Define.PropType.Furniture,
                     furnitureType = furnace.furnitureType,
-                    isMelting = furnace.isMelting
+                    furnace = furnace,
+                });
+            }
+            else if (propTile.prop is Data.Prop.Sprinkler sprinkler)
+            {
+                Managers.Prop.SpawnProp(new PropSpawnData
+                {
+                    tilePosition = pos,
+                    propType = Define.PropType.Furniture,
+                    furnitureType = sprinkler.furnitureType,
+                    sprinkler = sprinkler
                 });
             }
         }
@@ -66,10 +75,7 @@ public class MainScene : BaseScene
     {
         CurrentScene = Define.SceneType.Main;
 
-        Managers.Area.Init();
-        Managers.Time.Init();
-        Managers.Time.FlowTime();
-        
+        Managers.Game.DayStart();
         PlaceChangedTiles();
         PlaceTree();
         CreatePlayer();

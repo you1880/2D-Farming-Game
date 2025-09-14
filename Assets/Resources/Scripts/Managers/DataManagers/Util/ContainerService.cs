@@ -16,7 +16,7 @@ public class ContainerService
         {
             _chest[id] = new ChestContainer(capacity);
         }
-        Debug.Log($"Chest Id : {id} / {_chest.Count}");
+
         return id;
     }
 
@@ -26,7 +26,9 @@ public class ContainerService
     public bool DeleteChestContainer(string chestId)
         => _chest.Remove(chestId);
 
-    // Data.Chest를 반환하여 PropTile의 Furniture.Furniture에 저장
+    /// <summary>
+    /// Data.Chest를 반환하여 PropTile의 Furniture.Furniture에 저장
+    /// </summary>
     public Data.Prop.Chest SaveChestContainer(string chestId)
     {
         ChestContainer chestContainer = GetChestContainer(chestId);

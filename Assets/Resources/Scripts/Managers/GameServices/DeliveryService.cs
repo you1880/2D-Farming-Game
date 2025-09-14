@@ -54,6 +54,18 @@ public class DeliveryService
             return false;
         }
 
+        if(_deliveryItems.TryGetValue((_lastInputItem.itemCode, _lastInputItem.itemGrade), out int q))
+        {
+            if(q <= _lastInputItem.quantity)
+            {
+                _deliveryItems.Remove((_lastInputItem.itemCode, _lastInputItem.itemGrade));
+            }
+            else
+            {
+                _deliveryItems[(_lastInputItem.itemCode, _lastInputItem.itemGrade)] = q - _lastInputItem.quantity;
+            }
+        }
+
         _lastInputItem = null;
 
         return true;

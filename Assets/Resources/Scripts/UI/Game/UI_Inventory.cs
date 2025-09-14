@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Data.Date;
 using Data.Game;
 using Data.Inventory;
 using Data.Player;
@@ -14,7 +15,9 @@ public class UI_Inventory : UI_BaseInventory
     public enum Buttons
     {
         ExitButton,
-        TrashButton
+        TrashButton,
+        ExpandButton,
+        DownsizeButton
     }
 
     public enum Texts
@@ -24,10 +27,12 @@ public class UI_Inventory : UI_BaseInventory
         ItemLore,
         GoldText,
         FarmNameText,
+        DateText
     }
 
     public enum GameObjects
     {
+        InventoryScrollView,
         InventoryContent,
     }
 
@@ -35,20 +40,25 @@ public class UI_Inventory : UI_BaseInventory
     {
         InfoSlotItemImage,
         GoldIcon,
-        CharacterImage
     }
 
-    [SerializeField] Sprite _manSprite;
-    [SerializeField] Sprite _womanSprite;
     private GameObject _contents;
+    private RectTransform _contentsRectTransform;
+    private RectTransform _scrollRectTransform;
+    private Button _expandButton;
+    private Button _downsizeButton;
     private TextMeshProUGUI _goldText;
     private TextMeshProUGUI _farmNameText;
     private TextMeshProUGUI _itemPriceText;
     private TextMeshProUGUI _itemLoreText;
     private TextMeshProUGUI _itemNameText;
+    private TextMeshProUGUI _dateText;
     private Image _infoSlotItemImage;
     private Image _infoSlotGoldIcon;
-    private Image _characterImage;
+    private bool _isExpanded = false;
+    private float _contentsYPos = 0.0f;
+    private float _originalScrollWidth;
+    private float _originalContentsHeight;
 
     private void OnSlotClicked(PointerEventData data)
     {
@@ -137,8 +147,46 @@ public class UI_Inventory : UI_BaseInventory
     private void RemoveInventoryItem()
     {
         inventoryDataManager.RemoveInventoryItem(_selectedSlotId);
-        _selectedSlotId = SLOT_NOT_SELECTED;
         DeactivateDragItem();
+    }
+
+    private void OnExpandButtonClicked(PointerEventData data)
+    {
+        if (_isExpanded)
+        {
+            return;
+        }
+
+        _isExpanded = true;
+
+        _originalScrollWidth = _scrollRectTransform.offsetMin.x;
+        _scrollRectTransform.offsetMin = new Vector2(367.5f, _scrollRectTransform.offsetMin.y);
+
+        _contentsYPos = _contentsRectTransform.anchoredPosition.y;
+        _originalContentsHeight = _contentsRectTransform.rect.height;
+        _contentsRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 525.0f);
+        _contentsRectTransform.anchoredPosition = new Vector2(_contentsRectTransform.anchoredPosition.x, 0.0f);
+
+        _expandButton.gameObject.SetActive(false);
+        _downsizeButton.gameObject.SetActive(true);
+    }
+
+    private void OnDownsizeButtonClicked(PointerEventData data)
+    {
+        if (!_isExpanded)
+        {
+            return;
+        }
+
+        _isExpanded = false;
+
+        _scrollRectTransform.offsetMin = new Vector2(_originalScrollWidth, _scrollRectTransform.offsetMin.y);
+
+        _contentsRectTransform.anchoredPosition = new Vector2(_contentsRectTransform.anchoredPosition.x, _contentsYPos);
+        _contentsRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _originalContentsHeight);
+
+        _expandButton.gameObject.SetActive(true);
+        _downsizeButton.gameObject.SetActive(false);
     }
 
     private void OnExitButtonClicked(PointerEventData data)
@@ -161,14 +209,16 @@ public class UI_Inventory : UI_BaseInventory
         _itemNameText = GetText((int)Texts.ItemName);
         _itemPriceText = GetText((int)Texts.PriceText);
         _itemLoreText = GetText((int)Texts.ItemLore);
+        _dateText = GetText((int)Texts.DateText);
 
         _contents = GetObject((int)GameObjects.InventoryContent);
+        _contentsRectTransform = _contents.GetComponent<RectTransform>();
+        _scrollRectTransform = GetObject((int)GameObjects.InventoryScrollView).GetComponent<RectTransform>();
 
         _infoSlotItemImage = GetImage((int)Images.InfoSlotItemImage);
         _infoSlotItemImage.color = Color.clear;
         _infoSlotGoldIcon = GetImage((int)Images.GoldIcon);
         _infoSlotGoldIcon.color = Color.clear;
-        _characterImage = GetImage((int)Images.CharacterImage);
 
         _selectedItem.SetActive(false);
         _itemSplit.SetActive(false);
@@ -178,6 +228,13 @@ public class UI_Inventory : UI_BaseInventory
     {
         GetButton((int)Buttons.ExitButton).gameObject.BindEvent(OnExitButtonClicked);
         GetButton((int)Buttons.TrashButton).gameObject.BindEvent(OnTrashButtonClicked);
+
+        _expandButton = GetButton((int)Buttons.ExpandButton);
+        _downsizeButton = GetButton((int)Buttons.DownsizeButton);
+
+        _expandButton.gameObject.BindEvent(OnExpandButtonClicked);
+        _downsizeButton.gameObject.BindEvent(OnDownsizeButtonClicked);
+        _downsizeButton.gameObject.SetActive(false);
     }
 
     private void InitSlot()
@@ -214,16 +271,7 @@ public class UI_Inventory : UI_BaseInventory
 
         _farmNameText.text = $"{data.farmName} 농장";
         _goldText.text = $"{data.gold:N0}";
-
-        Define.PlayerGender gender = Managers.Data.UserDataManager.CurrentData.gender;
-        if (gender == Define.PlayerGender.Man)
-        {
-            _characterImage.sprite = _manSprite;
-        }
-        else
-        {
-            _characterImage.sprite = _womanSprite;
-        }
+        _dateText.text = $"{data.date.year}년차, {data.date.season}";
     }
 
     public override void Init()

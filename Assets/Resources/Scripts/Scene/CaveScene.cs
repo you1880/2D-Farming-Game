@@ -47,7 +47,7 @@ public class CaveScene : BaseScene
     {
         if (_player == null)
         {
-            _player = Managers.Resource.Instantiate("Player/Player");
+            _player = Managers.Resource.Instantiate("Player/Player_Cave");
         }
 
         _player.transform.position = _cavePropGenerator.PlayerSummonPosition;

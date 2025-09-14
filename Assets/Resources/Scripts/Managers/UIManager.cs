@@ -111,7 +111,7 @@ public class UIManager
         }
 
         T ui = ShowUI<T>();
-
+        
         if (ui != null)
         {
             Managers.Time.StopGame();

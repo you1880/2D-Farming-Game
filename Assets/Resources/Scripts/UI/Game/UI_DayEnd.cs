@@ -118,8 +118,9 @@ public class UI_DayEnd : UI_Base
             }
 
             _quantity.text = $"x {inventoryItem.quantity:N0}";
-
-            int totalSell = inventoryItem.quantity * item.sellingCost;
+            
+            float weight = 1.0f + ((float)inventoryItem.itemGrade * 0.5f);
+            int totalSell = Mathf.RoundToInt(inventoryItem.quantity * item.sellingCost * weight);
             _totalCost += totalSell;
 
             _itemSellCost.text = $"{totalSell:N0}";

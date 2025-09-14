@@ -15,7 +15,7 @@ public class DeliveryBox : MonoBehaviour, IInteractable
 
         if (Managers.Data.InventoryDataManager.GetQuickSlotItem() == null)
         {
-            if (Managers.Game.GetAndAddLastInputItem())
+            if (Managers.Game.GetOrAddLastInputItem())
             {
                 _audioTrigger?.PlaySound();
             }

@@ -70,6 +70,7 @@ namespace Data.Inventory
         }
     }
 
+    [System.Serializable]
     public class InventoryItemSave
     {
         public int slotId;
@@ -358,6 +359,27 @@ namespace Data.Prop
         public Furnace()
         {
             furnitureType = Define.FurnitureType.Furnace;
+        }
+    }
+
+    [System.Serializable]
+    public class Sprinkler : Furniture
+    {
+        public bool isSprayed;
+        public int radius;
+
+        public Sprinkler()
+        {
+            furnitureType = Define.FurnitureType.Sprinkler;
+            isSprayed = true;
+            radius = 1;
+        }
+
+        public Sprinkler(bool isSprayed, int radius = 1)
+        {
+            furnitureType = Define.FurnitureType.Sprinkler;
+            this.isSprayed = isSprayed;
+            this.radius = radius;
         }
     }
 }

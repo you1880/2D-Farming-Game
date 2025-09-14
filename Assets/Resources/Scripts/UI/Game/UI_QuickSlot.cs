@@ -20,27 +20,27 @@ public class UI_QuickSlot : UI_BaseInventory
         SelectSlot
     }
 
+    private List<RectTransform> _quickSlotRects = new List<RectTransform>();
     private const int QUICK_SLOT_START = 0;
     private const int QUICK_SLOT_END = 9;
-    private GameObject _selectSlotObject;
+    private RectTransform _selectSlotRect;
 
     private void SetCurrentQuickSlot(int quickSlotId)
     {
-        if (inventoryDataManager.CurrentQuickSlotId == quickSlotId)
+        RectTransform rect = _quickSlotRects[quickSlotId];
+        if (rect == null)
         {
             return;
         }
 
-        GameObject quickSlotObject = GetObject(quickSlotId);
-
-        if (quickSlotObject == null)
-        {
-            return;
-        }
-
+        var bounds = RectTransformUtility.CalculateRelativeRectTransformBounds(_selectSlotRect.parent, rect);
         inventoryDataManager.CurrentQuickSlotId = quickSlotId;
-        _selectSlotObject.transform.position = quickSlotObject.transform.position;
+
+        _selectSlotRect.anchoredPosition = bounds.center;
     }
+
+    private void SetInitialQuickSlot()
+        => SetCurrentQuickSlot(inventoryDataManager.CurrentQuickSlotId);
 
     private void OnKeyboardEvent(Define.KeyBoardEvent keyEvent)
     {
@@ -51,7 +51,10 @@ public class UI_QuickSlot : UI_BaseInventory
 
         int quickSlotId = (int)keyEvent - (int)Define.KeyBoardEvent.Num1;
 
-        SetCurrentQuickSlot(quickSlotId);
+        if (inventoryDataManager.CurrentQuickSlotId != quickSlotId)
+        {
+            SetCurrentQuickSlot(quickSlotId);
+        }
     }
 
     private void BindUIElements()
@@ -61,7 +64,7 @@ public class UI_QuickSlot : UI_BaseInventory
 
     private void GetUIElements()
     {
-        _selectSlotObject = GetObject((int)GameObjects.SelectSlot);
+        _selectSlotRect = GetObject((int)GameObjects.SelectSlot).GetComponent<RectTransform>();
     }
 
     private void InitSlot()
@@ -71,9 +74,14 @@ public class UI_QuickSlot : UI_BaseInventory
         for (int slotId = (int)GameObjects.QuickSlot0; slotId <= (int)GameObjects.QuickSlot8; slotId++)
         {
             GameObject slotObject = GetObject(slotId);
+            if (slotObject == null)
+            {
+                continue;
+            }
 
             InventorySlot inventorySlot = InventorySlot.CreateInventorySlot(slotObject);
             _inventorySlots.TryAdd(slotId, inventorySlot);
+            _quickSlotRects.Add(slotObject.GetComponent<RectTransform>());
         }
     }
 
@@ -96,8 +104,7 @@ public class UI_QuickSlot : UI_BaseInventory
         InitSlot();
         SetQuickSlotItem();
     }
-
-    private void Update() {}
+    private void Update() { }
 
     private void OnEnable()
     {
@@ -106,11 +113,15 @@ public class UI_QuickSlot : UI_BaseInventory
 
         inventoryDataManager.OnInventoryChanged -= UpdateInventoryUI;
         inventoryDataManager.OnInventoryChanged += UpdateInventoryUI;
+
+        Canvas.willRenderCanvases -= SetInitialQuickSlot;
+        Canvas.willRenderCanvases += SetInitialQuickSlot;
     }
 
     private void OnDisable()
     {
         Managers.Input.KeyAction -= OnKeyboardEvent;
         inventoryDataManager.OnInventoryChanged -= UpdateInventoryUI;
+        Canvas.willRenderCanvases -= SetInitialQuickSlot;
     }
 }
