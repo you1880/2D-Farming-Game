@@ -19,6 +19,7 @@
 
 #### 사용 Assets
 - [Unity Asset Store 이동](https://assetstore.unity.com/packages/2d/environments/2d-cozy-rpg-farming-tilesets-characters-pixelart-full-bundle-212921)
+- 픽셀 아이콘 아트 일부 : **생성형 AI를 통한 제작** 
 
 
 
