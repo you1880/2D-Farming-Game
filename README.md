@@ -26,4 +26,4 @@
 
 
 
-###### 기존 작업하던 Repository에서 새 Repository로 이동
+###### 유료 에셋으로 인해 기존 작업하던 Repository에서 새 Repository로 이동
